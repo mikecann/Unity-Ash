@@ -5,11 +5,24 @@ A working port of [Richard Lord's Ash Game Framework](https://github.com/richard
 
 More info on the blog post: http://www.mikecann.co.uk/myprojects/unityasteroids/unity-ashteroids-ash-framework-in-unity/
 
+Usage
+-----
+
+1) Extend AshGame, add your systems in Awake (see [Unity Ashteroids](https://github.com/mikecann/UnityAshteroids) for an example of this)
+2) Create a GameObject and add your new AshGame Component.
+3) Create your GameObjects as usual but Add an Entity to each one. 
+
+Thats it! The Entity will detect when components or added. The Systems will be updated with the latest NodeLists based on the component changes.
+
+Notes on Performance
+-----------
+
+Entity works by calling GetComponents<> in its update loop then checking to see if any components have been added or removed since the last update. As such this is quite an expensive process so Entity contains an "updateFrequency" variable that you can use to toggle how often you want Entity to check for component changes. If you know that a type of GameObject will never have components added or removed then set the updateFrequency to Never and enjoy native performance.
+
 Known Issues
 ------------
 
 + Although Unity allows for multiple components of the same type Ash doesn't, don't try to use multiple components of the same type.
-+ It works by getting and checking components of every GameObject in the game each frame so there may be some performance issues with large numbers of GameObjects.
 
 Potential Improvements
 ----------------------
@@ -82,6 +95,8 @@ public class ListIteratingSystem<BulletAgeNode>
 ```
 
 The ListIteratingSystem could contain variants that support multiple node list e.g. ListIteratingSystm<T1,T2,T3,T4>
+
+The ListIteratingSystem would improve total performance too as it would remove the uneccessary casting of nodes.
 
 ### Remove Linked Lists
 
