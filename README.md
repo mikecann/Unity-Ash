@@ -1,3 +1,5 @@
+![logo](http://i.imgur.com/Wpsk1fy.png)
+
 Unity-Ash
 =============
 
@@ -17,7 +19,11 @@ Thats it! The Entity will detect when components or added. The Systems will be u
 Notes on Performance
 -----------
 
-Entity works by calling GetComponents<> in its update loop then checking to see if any components have been added or removed since the last update. As such this is quite an expensive process so Entity contains an "updateFrequency" variable that you can use to toggle how often you want Entity to check for component changes. If you know that a type of GameObject will never have components added or removed then set the updateFrequency to Never and enjoy native performance.
+Entity works by calling GetComponents<> in its update loop then checking to see if any components have been added or removed since the last update. As such this is quite an expensive process so Entity contains an "updateFrequency" variable that you can use to toggle how often you want Entity to check for component changes. 
+
+![update frequency](http://i.imgur.com/mK5oWBW.png)
+
+If you know that a type of GameObject will never have components added or removed then set the updateFrequency to Never and enjoy native performance.
 
 Known Issues
 ------------
