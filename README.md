@@ -110,6 +110,18 @@ Ash in AS3 used linked lists for much of its internals (NodeList, SystemList, En
 
 In C# we have generic Lists and thus the performance issues are much less of a worry and so we can probably do away with the linked lists and use normal Lists instead which would greatly simplify things.
 
+For example it would change the following:
+
+```
+for (var asteroid = (AsteroidCollisionNode)asteroids.Head; asteroid!=null; asteroid = (AsteroidCollisionNode)asteroid.Next) {}
+```
+
+into
+
+```
+foreach(var asteroid in asteroids) {}
+```
+
 ### Simplify Confusing Entity / EntityBase
 
 Currently Entity extends EntityBase which contains Add / Remove component methods. This is because EntityBase was taken straight from the .Net port (with minor changes).
