@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Net.RichardLord.Ash.Core;
+using UnityEngine;
 
 namespace Net.RichardLord.AshTests.Core
 {
     [TestFixture]
-	public class EntityTests
+	public class EntityTests : UnityUnitTest
 	{
         private EntityBase _entity;
 
@@ -214,8 +215,132 @@ namespace Net.RichardLord.AshTests.Core
             var clone = _entity.Clone();
             Assert.AreEqual(5, clone.Get<MockComponent>(typeof(MockComponent)).Value);
         }
+
+        [Test]
+        public void EntityAddsComponentsFromGameObjectOnAwake()
+        {
+            var obj = CreateGameObject("TestObj");
+            obj.AddComponent<MockUnityComponentA>();
+            obj.AddComponent<MockUnityComponentB>();
+
+            // Forcing the component to Awake
+            var entity = obj.AddComponent<Entity>();
+            TestingHelpers.CallMethod(entity, "Awake");
+
+            Assert.IsTrue(entity.Has(typeof(MockUnityComponentA)));
+            Assert.IsTrue(entity.Has(typeof(MockUnityComponentB)));
+            Assert.IsFalse(entity.Has(typeof(MockUnityComponentC)));
+        }
+
+        [Test]
+        public void EntityAddsComponentsOnUpdate()
+        {
+            var obj = CreateGameObject("TestObj");
+            obj.AddComponent<MockUnityComponentA>();
+            obj.AddComponent<MockUnityComponentB>();
+
+            // Forcing the component to Awake
+            var entity = obj.AddComponent<Entity>();
+            TestingHelpers.CallMethod(entity, "Awake");
+
+            // Adding another component then updating should add the entity
+            obj.AddComponent<MockUnityComponentC>();
+            TestingHelpers.CallMethod(entity, "Update");
+
+            Assert.IsTrue(entity.Has(typeof(MockUnityComponentA)));
+            Assert.IsTrue(entity.Has(typeof(MockUnityComponentB)));
+            Assert.IsTrue(entity.Has(typeof(MockUnityComponentC)));
+        }
+
+        [Test]
+        public void EntityRemovesComponentsOnUpdate()
+        {
+            var obj = CreateGameObject("TestObj");
+            obj.AddComponent<MockUnityComponentA>();
+            obj.AddComponent<MockUnityComponentB>();
+
+            // Forcing the component to Awake
+            var entity = obj.AddComponent<Entity>();
+            TestingHelpers.CallMethod(entity, "Awake");
+
+            // Adding another component then updating should add the entity
+            GameObject.DestroyImmediate(obj.GetComponent<MockUnityComponentA>());
+            TestingHelpers.CallMethod(entity, "Update");
+
+            Assert.IsFalse(entity.Has(typeof(MockUnityComponentA)));
+            Assert.IsTrue(entity.Has(typeof(MockUnityComponentB)));
+            Assert.IsFalse(entity.Has(typeof(MockUnityComponentC)));
+        }
+
+        [Test]
+        public void EnitityFindsGameWhenItIsOneAbove()
+        {
+            var game = CreateGameObject("Game").AddComponent<AshGame>();
+            
+            var obj = CreateGameObject("TestObj");
+            obj.transform.parent = game.transform;
+
+            // Forcing the component to Awake
+            var entity = obj.AddComponent<Entity>();
+            TestingHelpers.CallMethod(entity, "Awake");
+
+            Assert.IsNotNull(entity.Engine);
+        }
+
+        [Test]
+        public void EnitityFindsGameWhenItIsTwoAbove()
+        {
+            var game = CreateGameObject("Game").AddComponent<AshGame>();
+
+            var parent = CreateGameObject("ParentObj");
+            parent.transform.parent = game.transform;
+
+            var obj = CreateGameObject("TestObj");
+            obj.transform.parent = parent.transform;
+
+            // Forcing the component to Awake
+            var entity = obj.AddComponent<Entity>();
+            TestingHelpers.CallMethod(entity, "Awake");
+
+            Assert.IsNotNull(entity.Engine);
+        }
+
+        [Test]
+        public void EnitityFindsGameWhenItsNotAParent()
+        {
+            var game = CreateGameObject("Game").AddComponent<AshGame>();
+            
+            var obj = CreateGameObject("TestObj");
+
+            // Forcing the component to Awake
+            var entity = obj.AddComponent<Entity>();
+            TestingHelpers.CallMethod(entity, "Awake");
+
+            Assert.IsNotNull(entity.Engine);
+        }
+
+        [Test]
+        [ExpectedException] // (ExpectedMessage = "Could not find find the AshGame in parent tree!")
+        public void EnitityThrowsExceptionWhenItCantFindTheGame()
+        {
+            var obj = CreateGameObject("TestObj");
+
+            // Forcing the component to Awake
+            var entity = obj.AddComponent<Entity>();
+            TestingHelpers.CallMethod(entity, "Awake");
+
+            Assert.IsNotNull(entity.Engine);
+        }
+
+  
 	}
 
+    class MockUnityComponentA : MonoBehaviour { }
+
+    class MockUnityComponentB : MonoBehaviour { }
+
+    class MockUnityComponentC : MonoBehaviour { }
+    
     class MockComponent
     {
         public int Value { get; set; }

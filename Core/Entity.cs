@@ -22,33 +22,43 @@ namespace Net.RichardLord.Ash.Core
         }
 
         private IGame engine;
+        private List<Component> componentCache;
 
-        void Awake()
+        private void Awake()
         {
-            AddNewComponents(GetComponents<Component>());
+            componentCache = new List<Component>();
+            GetComponents<Component>(componentCache);
+            AddNewComponents(componentCache);
             Engine = FindEngine();
         }
 
         private IGame FindEngine()
         {
-            var p = transform.parent;
-            while (p != null)
+            // First try to find the game in the parent which should be relatively fast.
+            var game = GetComponentInParent<AshGame>();
+            if(game==null)
             {
-                var e = p.GetComponent<AshGame>();
-                if (e != null) return e.Engine;
-                p = p.parent;
+                // If it cant find it we should warn the user
+                Debug.LogWarning("For performance reasons your Entity should be a child of the AshGame");
+
+                // This is an expensive call and a last ditch attempt to find the Ash Game
+                game = GameObject.FindObjectOfType<AshGame>();
             }
-            return null;
+
+            // If we still couldnt find the game then die.
+            if (game == null) throw new Exception("Could not find find the AshGame in parent tree!");
+
+            return game.Engine;
         }
 
-        void Update()
-        {          
-            var components = GetComponents<Component>();
-            AddNewComponents(components);
-            RemoveOldComponents(components);
+        private void Update()
+        {
+            GetComponents<Component>(componentCache);
+            AddNewComponents(componentCache);
+            RemoveOldComponents(componentCache);
         }
 
-        private void AddNewComponents(Component[] components)
+        private void AddNewComponents(List<Component> components)
         {
             foreach (var component in components)
             {
@@ -57,19 +67,28 @@ namespace Net.RichardLord.Ash.Core
             }
         }
 
-        private void RemoveOldComponents(Component[] components)
+        private void RemoveOldComponents(List<Component> components)
         {
             var toRemove = new List<Type>();
             foreach (var pair in Components)
             {
-                if (!components.Contains(pair.Value))
+                var found = false;
+                foreach (var component in components)
+                {
+                    if(component==pair.Value)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
                     toRemove.Add(pair.Key);
             }
             foreach (var type in toRemove)
                 Remove(type);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (Engine == null) return;
             Engine.RemoveEntity(this);
