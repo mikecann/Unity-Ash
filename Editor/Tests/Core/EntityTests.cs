@@ -7,9 +7,9 @@ using UnityEngine;
 namespace Net.RichardLord.AshTests.Core
 {
     [TestFixture]
-	public class EntityTests : UnityUnitTest
+	public class EntityTests : BaseTest
 	{
-        private EntityBase _entity;
+        private EntityBase _entity;       
 
         [SetUp]
         public void CreateEntity()
@@ -20,7 +20,7 @@ namespace Net.RichardLord.AshTests.Core
         [TearDown]
         public void ClearEntity()
         {
-            _entity = null;
+            _entity = null;            
         }
 
         [Test]
@@ -235,6 +235,8 @@ namespace Net.RichardLord.AshTests.Core
         [Test]
         public void EntityAddsComponentsOnUpdate()
         {
+            CreateGameObject("Game").AddComponent<AshGame>();
+
             var obj = CreateGameObject("TestObj");
             obj.AddComponent<MockUnityComponentA>();
             obj.AddComponent<MockUnityComponentB>();
@@ -242,6 +244,7 @@ namespace Net.RichardLord.AshTests.Core
             // Forcing the component to Awake
             var entity = obj.AddComponent<Entity>();
             TestingHelpers.CallMethod(entity, "Awake");
+            TestingHelpers.CallMethod(entity, "Start");
 
             // Adding another component then updating should add the entity
             obj.AddComponent<MockUnityComponentC>();
@@ -255,6 +258,8 @@ namespace Net.RichardLord.AshTests.Core
         [Test]
         public void EntityRemovesComponentsOnUpdate()
         {
+            CreateGameObject("Game").AddComponent<AshGame>();
+
             var obj = CreateGameObject("TestObj");
             obj.AddComponent<MockUnityComponentA>();
             obj.AddComponent<MockUnityComponentB>();
@@ -262,6 +267,7 @@ namespace Net.RichardLord.AshTests.Core
             // Forcing the component to Awake
             var entity = obj.AddComponent<Entity>();
             TestingHelpers.CallMethod(entity, "Awake");
+            TestingHelpers.CallMethod(entity, "Start");
 
             // Adding another component then updating should add the entity
             GameObject.DestroyImmediate(obj.GetComponent<MockUnityComponentA>());
@@ -283,6 +289,7 @@ namespace Net.RichardLord.AshTests.Core
             // Forcing the component to Awake
             var entity = obj.AddComponent<Entity>();
             TestingHelpers.CallMethod(entity, "Awake");
+            TestingHelpers.CallMethod(entity, "Start");
 
             Assert.IsNotNull(entity.Engine);
         }
@@ -301,6 +308,7 @@ namespace Net.RichardLord.AshTests.Core
             // Forcing the component to Awake
             var entity = obj.AddComponent<Entity>();
             TestingHelpers.CallMethod(entity, "Awake");
+            TestingHelpers.CallMethod(entity, "Start");
 
             Assert.IsNotNull(entity.Engine);
         }
@@ -315,6 +323,7 @@ namespace Net.RichardLord.AshTests.Core
             // Forcing the component to Awake
             var entity = obj.AddComponent<Entity>();
             TestingHelpers.CallMethod(entity, "Awake");
+            TestingHelpers.CallMethod(entity, "Start");
 
             Assert.IsNotNull(entity.Engine);
         }
@@ -328,6 +337,7 @@ namespace Net.RichardLord.AshTests.Core
             // Forcing the component to Awake
             var entity = obj.AddComponent<Entity>();
             TestingHelpers.CallMethod(entity, "Awake");
+            TestingHelpers.CallMethod(entity, "Start");
 
             Assert.IsNotNull(entity.Engine);
         }
