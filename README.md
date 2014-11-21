@@ -10,9 +10,9 @@ More info on the blog post: http://www.mikecann.co.uk/myprojects/unityasteroids/
 Usage
 -----
 
-1) Extend AshGame, add your systems in Awake (see [Unity Ashteroids](https://github.com/mikecann/UnityAshteroids) for an example of this)
-2) Create a GameObject and add your new AshGame Component.
-3) Create your GameObjects as usual but Add an Entity to each one. 
+1. Extend AshGame, add your systems in Awake (see [Unity Ashteroids](https://github.com/mikecann/UnityAshteroids) for an example of this)
+2. Create a GameObject and add your new AshGame Component.
+3. Create your GameObjects as usual but Add an Entity to each one. 
 
 Thats it! The Entity will detect when components or added. The Systems will be updated with the latest NodeLists based on the component changes.
 
