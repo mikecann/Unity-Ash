@@ -13,6 +13,16 @@ namespace Ash.Core
         {
             _nodes = new List<T>();
         }
+        
+        public void EntityAdded(IEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EntityRemoved(IEntity entity)
+        {
+            throw new NotImplementedException();
+        }
 
         public IEnumerable<T> Nodes
         {

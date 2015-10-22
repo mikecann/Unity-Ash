@@ -103,5 +103,81 @@ namespace Ash.Core
             var nodes2 = _engine.GetNodes<MockNodeA>();
             Assert.IsTrue(nodes1 != nodes2);
         }
+
+        [Test]
+        public void AddingAnEntity_InformsEachFamily()
+        {
+            var factory = Substitute.For<IFamilyFactory>();
+            var engine = new Engine(factory);
+
+            var familyA = Substitute.For<IFamily<MockNodeA>>();
+            var familyB = Substitute.For<IFamily<MockNodeB>>();
+
+            factory.Produce<MockNodeA>().Returns(familyA);
+            factory.Produce<MockNodeB>().Returns(familyB);
+
+            engine.GetNodes<MockNodeA>();
+            engine.GetNodes<MockNodeB>();
+
+            var entityA = new Entity();
+
+            engine.AddEntity(entityA);
+
+            familyA.Received().EntityAdded(entityA);
+            familyB.Received().EntityAdded(entityA);
+        }
+
+        [Test]
+        public void RemovingAnEntity_InformsEachFamily()
+        {
+            var factory = Substitute.For<IFamilyFactory>();
+            var engine = new Engine(factory);
+
+            var familyA = Substitute.For<IFamily<MockNodeA>>();
+            var familyB = Substitute.For<IFamily<MockNodeB>>();
+
+            factory.Produce<MockNodeA>().Returns(familyA);
+            factory.Produce<MockNodeB>().Returns(familyB);
+
+            engine.GetNodes<MockNodeA>();
+            engine.GetNodes<MockNodeB>();
+
+            var entityA = new Entity();
+
+            engine.AddEntity(entityA);
+            engine.RemoveEntity(entityA);
+
+            familyA.Received().EntityRemoved(entityA);
+            familyB.Received().EntityRemoved(entityA);
+        }
+
+        [Test]
+        public void IfNodesAreReleased_FamilyNoLongerInformedWhenEntityAddedOrRemoved()
+        {
+            var factory = Substitute.For<IFamilyFactory>();
+            var engine = new Engine(factory);
+
+            var familyA = Substitute.For<IFamily<MockNodeA>>();
+            var familyB = Substitute.For<IFamily<MockNodeB>>();
+
+            factory.Produce<MockNodeA>().Returns(familyA);
+            factory.Produce<MockNodeB>().Returns(familyB);
+
+            engine.GetNodes<MockNodeA>();
+            engine.GetNodes<MockNodeB>();
+
+            engine.ReleaseNodes<MockNodeA>();
+
+            var entityA = new Entity();
+
+            engine.AddEntity(entityA);
+            engine.RemoveEntity(entityA);
+
+            familyA.DidNotReceive().EntityAdded(entityA);
+            familyB.Received().EntityAdded(entityA);
+
+            familyA.DidNotReceive().EntityRemoved(entityA);
+            familyB.Received().EntityRemoved(entityA);
+        }
     }
 }

@@ -8,24 +8,26 @@ namespace Ash.Core
     public class Engine : IEngine
     {
         private List<PrioritizedSystem> _systems;
-        private List<IEntity> _entities;
         private Dictionary<Type, IFamily> _families;
+        private IFamilyFactory _familyFactory;
 
-        public Engine()
+        public Engine(IFamilyFactory familyFactory = null)
         {
+            _familyFactory = familyFactory ?? new ComponentMatchingFamilyFactory();
             _systems = new List<PrioritizedSystem>();
-            _entities = new List<IEntity>();
             _families = new Dictionary<Type, IFamily>();
         }
 
         public void AddEntity(IEntity entity)
         {
-            throw new NotImplementedException();
+            foreach (var pair in _families)
+                pair.Value.EntityAdded(entity);
         }
 
         public void RemoveEntity(IEntity entity)
         {
-            throw new NotImplementedException();
+            foreach (var pair in _families)
+                pair.Value.EntityRemoved(entity);
         }
 
         public void AddSystem(ISystem system, int priority)
@@ -50,7 +52,7 @@ namespace Ash.Core
                 family = _families[type] as IFamily<T>;
             else
             {
-                family = new ComponentMatchingFamily<T>();
+                family = _familyFactory.Produce<T>();
                 _families[type] = family;
             }
 

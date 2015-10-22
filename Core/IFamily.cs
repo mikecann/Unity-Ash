@@ -7,6 +7,8 @@ namespace Ash.Core
 {
     public interface IFamily
     {
+        void EntityAdded(IEntity entity);
+        void EntityRemoved(IEntity entity);
     }
 
     public interface IFamily<T> : IFamily
