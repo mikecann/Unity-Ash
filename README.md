@@ -1,7 +1,7 @@
 ![logo](http://i.imgur.com/Wpsk1fy.png)
 
 
-CURRENT GOING THROUGH A REWRITE!!
+CURRENTLY GOING THROUGH A REWRITE!!
 =============================
 
 
