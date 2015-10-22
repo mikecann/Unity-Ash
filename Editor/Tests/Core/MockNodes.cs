@@ -5,7 +5,11 @@ using System.Text;
 
 namespace Ash.Core
 {
-    public class Entity : IEntity
+    public class MockNodeA
+    {
+    }
+
+    public class MockNodeB
     {
     }
 }

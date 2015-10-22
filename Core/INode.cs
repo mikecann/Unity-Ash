@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ash.Core
 {
-    public class Entity : IEntity
+    public interface INode
     {
     }
 }
