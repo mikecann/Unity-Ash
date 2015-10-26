@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Ash.Core
 {
@@ -20,17 +21,27 @@ namespace Ash.Core
             ComponentRemoved = new ComponentRemoved();
         }
 
-        public bool HasComponent(Type type)
+        public bool Has(Type type)
         {
             return _components.Any(c => c.GetType() == type);
         }
 
-        public object GetComponent(Type type)
+        public object Get(Type type)
         {
-            if (!HasComponent(type))
+            if (!Has(type))
                 throw new Exception("Invalid type");
 
             return _components.FirstOrDefault(c => c.GetType() == type);
+        }
+
+        public T Add<T>() where T : Component
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(Component component)
+        {
+            throw new NotImplementedException();
         }
 
         public ComponentAdded ComponentAdded { get; private set; }

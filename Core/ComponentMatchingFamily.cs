@@ -73,14 +73,14 @@ namespace Ash.Core
         private void AddIfMatch(IEntity entity)
         {
             foreach (var pair in _components)
-                if (!entity.HasComponent(pair.Key))
+                if (!entity.Has(pair.Key))
                     return;
 
             var node = _pool.UnPool();
             _nodes[entity] = node;
 
             foreach (var pair in _components)
-                pair.Value.SetValue(node, entity.GetComponent(pair.Key));
+                pair.Value.SetValue(node, entity.Get(pair.Key));
         }
 
         public IEnumerable<T> Nodes

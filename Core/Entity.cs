@@ -10,28 +10,54 @@ namespace Ash.Core
     {
         private ComponentAdded _componentAdded = new ComponentAdded();
         private ComponentRemoved _componentRemoved = new ComponentRemoved();
+        private IEngine _engine;
 
-        public bool HasComponent(Type type)
+        protected void Awake()
+        {
+            _engine = FindEngine();
+            if (_engine == null)
+                throw new EntityException("Canont find Engine!");
+
+            _engine.AddEntity(this);
+        }
+
+        protected virtual IEngine FindEngine()
+        {
+            return Engine.Current;
+        }
+
+        public bool Has(Type type)
         {
             return gameObject.GetComponent(type) != null;
         }
 
-        public object GetComponent(Type type)
+        public object Get(Type type)
         {
             return gameObject.GetComponent(type);
         }
 
-        public T AddComponent<T>() where T : Component
+        public T Add<T>() where T : Component
         {
             var component = gameObject.AddComponent<T>();
             ComponentAdded.Invoke(this, typeof (T));
             return component;
         }
 
-        public void RemoveComponent(Component component)
+        public void Remove(Component component)
+        {
+            DestroyComponent(component);
+            ComponentRemoved.Invoke(this, component.GetType());
+        }
+
+        protected virtual void DestroyComponent(Component component)
         {
             Destroy(component);
-            ComponentRemoved.Invoke(this, component.GetType());
+        }
+
+        void OnDestroy()
+        {
+            if (_engine!=null)
+                _engine.RemoveEntity(this);
         }
 
         public ComponentAdded ComponentAdded

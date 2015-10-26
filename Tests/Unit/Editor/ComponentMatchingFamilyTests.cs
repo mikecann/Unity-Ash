@@ -6,7 +6,7 @@ using Ash.Core;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
+namespace Ash.Core
 {
     [TestFixture]
     public class ComponentMatchingFamilyTests
@@ -21,7 +21,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void AddingAnEntityWithMissingComponents_IsNotAddedToNodeList()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entityA = new MockEntity<MockComponentB>();
             family.EntityAdded(entityA);
@@ -32,7 +32,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void AddingAnEntityWithMatchingComponent_IsAddedToNodeList()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entityA = new MockEntity<MockComponentA>();
             family.EntityAdded(entityA);
@@ -44,7 +44,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void AddingAnEntityWithMultipleMatchingComponents_IsAddedToNodeList()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA, MockComponentB>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA, MockComponentB>>();
 
             var entityA = new MockEntity<MockComponentA, MockComponentB>();
             family.EntityAdded(entityA);
@@ -56,7 +56,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void AddingAnEntityWithMultipleComponentsButNotMatching_IsNotAddedToNodeList()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA, MockComponentB>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA, MockComponentB>>();
 
             var entityA = new MockEntity<MockComponentA, MockComponentC>();
             family.EntityAdded(entityA);
@@ -67,7 +67,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void AddingDifferentEntitiesWithMatchingComponent_AllAreAddedToNodeList()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entity1 = new MockEntity<MockComponentA>();
             var entity2 = new MockEntity<MockComponentA>();
@@ -87,7 +87,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [ExpectedException(typeof(ComponentMatchingFamilyException))]
         public void IfAnEntityIsAddedTwice_ExceptionThrown()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entityA = new MockEntity<MockComponentA>();
 
@@ -98,7 +98,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void IfFamilyDoesntContainEntityWhenOneIsRemoved_NothingHappens()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entity1 = new MockEntity<MockComponentA>();
             family.EntityAdded(entity1);
@@ -113,7 +113,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void IfEntityMatches_RemovesNodeFromList()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entity1 = new MockEntity<MockComponentA>();
             family.EntityAdded(entity1);
@@ -125,7 +125,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void IfEntityOfSameTypeButDifferentInstanceIsRemoved_CorrectInstanceIsRemoved()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entity1 = new MockEntity<MockComponentA>();
             family.EntityAdded(entity1);
@@ -144,8 +144,8 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void WhenEntityAdded_NodePoolUsed()
         {
-            var pool = Substitute.For<INodePool<MockNode<MockComponentA>>>();
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>(pool);
+            var pool = Substitute.For<INodePool<Node<MockComponentA>>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>(pool);
 
             var entity1 = new MockEntity<MockComponentA>();
             family.EntityAdded(entity1);
@@ -156,10 +156,10 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void WhenEntityRemoved_NodeReturnedToPool()
         {
-            var pool = Substitute.For<INodePool<MockNode<MockComponentA>>>();
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>(pool);
+            var pool = Substitute.For<INodePool<Node<MockComponentA>>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>(pool);
 
-            var node = new MockNode<MockComponentA>();
+            var node = new Node<MockComponentA>();
             pool.UnPool().Returns(node);
 
             var entity1 = new MockEntity<MockComponentA>();
@@ -173,7 +173,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void IfComponentAddedThatMakesThisEntityMatch_AddedToNodes()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entityA = new MockEntity<MockComponentA>();
             family.ComponentAdded(entityA, typeof(MockComponentA));
@@ -185,7 +185,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void IfComponentAddedToEntityThatAlreadyInList_NothingHappens()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entityA = new MockEntity<MockComponentA>();
             family.EntityAdded(entityA);
@@ -198,7 +198,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void IfComponentRemovedThatMakesThisEntityNoLongerMatch_RemovedFromNodes()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entityA = new MockEntity<MockComponentA>();
             family.EntityAdded(entityA);
@@ -210,7 +210,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void IfComponentRemovedFromAnEntityNotInTheList_NothingHappens()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entity1 = new MockEntity<MockComponentA>();
             var entity2 = new MockEntity<MockComponentB>();
@@ -230,7 +230,7 @@ namespace Assets.Libraries.Unity_Ash.Editor.Tests.Core
         [Test]
         public void IfComponentRemovedButTheEntityStillMatches_NothingHappens()
         {
-            var family = new ComponentMatchingFamily<MockNode<MockComponentA>>();
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entityA = new MockEntity<MockComponentA>();
             family.EntityAdded(entityA);

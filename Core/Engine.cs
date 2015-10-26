@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Ash.Core
 {
@@ -14,6 +15,7 @@ namespace Ash.Core
 
         public Engine(IFamilyFactory familyFactory = null)
         {
+            Current = this;
             _familyFactory = familyFactory ?? new ComponentMatchingFamilyFactory();
             _systems = new List<PrioritizedSystem>();
             _families = new Dictionary<Type, IFamily>();
@@ -100,5 +102,7 @@ namespace Ash.Core
             foreach (var prioritizedSystem in _systems)
                 prioritizedSystem.System.Update(delta);
         }
+
+        public static IEngine Current { get; set; }
     }
 }

@@ -75,27 +75,27 @@ namespace Ash.Core
         [Test]
         public void GetsNodesForAGivenType()
         {
-            var nodes1 = _engine.GetNodes<MockNode>();
+            var nodes1 = _engine.GetNodes<Node>();
             Assert.IsNotNull(nodes1);
         }
 
         [Test]
         public void IfTwoNodeTypesAreReturned_DifferentFamiliesAreReturned()
         {
-            var nodes1 = _engine.GetNodes<MockNode>();
-            var nodes2 = _engine.GetNodes<MockNode>();
+            var nodes1 = _engine.GetNodes<Node>();
+            var nodes2 = _engine.GetNodes<Node>();
             Assert.IsTrue(nodes1 != nodes2);
         }
 
         [Test]
         public void IfSameNodeIsRequestedTwice_SameNodesReturned()
         {
-            var nodes1 = _engine.GetNodes<MockNode<MockComponentA>>();
+            var nodes1 = _engine.GetNodes<Node<MockComponentA>>();
 
             var entity = new MockEntity<MockComponentA>();
             _engine.AddEntity(entity);
 
-            var nodes2 = _engine.GetNodes<MockNode<MockComponentA>>();
+            var nodes2 = _engine.GetNodes<Node<MockComponentA>>();
 
             Assert.IsTrue(nodes1.Count() == nodes2.Count());
             Assert.IsTrue(nodes1.ToList()[0] == nodes2.ToList()[0]);
@@ -108,14 +108,14 @@ namespace Ash.Core
             var factory = Substitute.For<IFamilyFactory>();
             var engine = new Engine(factory);
 
-            var familyA = Substitute.For<IFamily<MockNode<MockComponentA>>>();
-            var familyB = Substitute.For<IFamily<MockNode<MockComponentB>>>();
+            var familyA = Substitute.For<IFamily<Node<MockComponentA>>>();
+            var familyB = Substitute.For<IFamily<Node<MockComponentB>>>();
 
-            factory.Produce<MockNode<MockComponentA>>().Returns(familyA);
-            factory.Produce<MockNode<MockComponentB>>().Returns(familyB);
+            factory.Produce<Node<MockComponentA>>().Returns(familyA);
+            factory.Produce<Node<MockComponentB>>().Returns(familyB);
 
-            engine.GetNodes<MockNode<MockComponentA>>();
-            engine.GetNodes<MockNode<MockComponentB>>();
+            engine.GetNodes<Node<MockComponentA>>();
+            engine.GetNodes<Node<MockComponentB>>();
 
             var entityA = new MockEntity();
 
@@ -131,14 +131,14 @@ namespace Ash.Core
             var factory = Substitute.For<IFamilyFactory>();
             var engine = new Engine(factory);
 
-            var familyA = Substitute.For<IFamily<MockNode<MockComponentA>>>();
-            var familyB = Substitute.For<IFamily<MockNode<MockComponentB>>>();
+            var familyA = Substitute.For<IFamily<Node<MockComponentA>>>();
+            var familyB = Substitute.For<IFamily<Node<MockComponentB>>>();
 
-            factory.Produce<MockNode<MockComponentA>>().Returns(familyA);
-            factory.Produce<MockNode<MockComponentB>>().Returns(familyB);
+            factory.Produce<Node<MockComponentA>>().Returns(familyA);
+            factory.Produce<Node<MockComponentB>>().Returns(familyB);
 
-            engine.GetNodes<MockNode<MockComponentA>>();
-            engine.GetNodes<MockNode<MockComponentB>>();
+            engine.GetNodes<Node<MockComponentA>>();
+            engine.GetNodes<Node<MockComponentB>>();
 
             var entityA = new MockEntity();
 
@@ -155,16 +155,16 @@ namespace Ash.Core
             var factory = Substitute.For<IFamilyFactory>();
             var engine = new Engine(factory);
 
-            var familyA = Substitute.For<IFamily<MockNode<MockComponentA>>>();
-            var familyB = Substitute.For<IFamily<MockNode<MockComponentB>>>();
+            var familyA = Substitute.For<IFamily<Node<MockComponentA>>>();
+            var familyB = Substitute.For<IFamily<Node<MockComponentB>>>();
 
-            factory.Produce<MockNode<MockComponentA>>().Returns(familyA);
-            factory.Produce<MockNode<MockComponentB>>().Returns(familyB);
+            factory.Produce<Node<MockComponentA>>().Returns(familyA);
+            factory.Produce<Node<MockComponentB>>().Returns(familyB);
 
-            engine.GetNodes<MockNode<MockComponentA>>();
-            engine.GetNodes<MockNode<MockComponentB>>();
+            engine.GetNodes<Node<MockComponentA>>();
+            engine.GetNodes<Node<MockComponentB>>();
 
-            engine.ReleaseNodes<MockNode<MockComponentA>>();
+            engine.ReleaseNodes<Node<MockComponentA>>();
 
             var entityA = new MockEntity();
 
@@ -185,14 +185,14 @@ namespace Ash.Core
             var engine = new Engine(factory);
             var entity = new MockEntity<MockComponentA>();
 
-            var family1 = Substitute.For<IFamily<MockNode<MockComponentA>>>();
-            var family2 = Substitute.For<IFamily<MockNode<MockComponentA>>>();
-            factory.Produce<MockNode<MockComponentA>>().Returns(family1, family2);
+            var family1 = Substitute.For<IFamily<Node<MockComponentA>>>();
+            var family2 = Substitute.For<IFamily<Node<MockComponentA>>>();
+            factory.Produce<Node<MockComponentA>>().Returns(family1, family2);
 
-            engine.GetNodes<MockNode<MockComponentA>>();
+            engine.GetNodes<Node<MockComponentA>>();
             engine.AddEntity(entity);
-            engine.ReleaseNodes<MockNode<MockComponentA>>();
-            engine.GetNodes<MockNode<MockComponentA>>();
+            engine.ReleaseNodes<Node<MockComponentA>>();
+            engine.GetNodes<Node<MockComponentA>>();
 
             family1.Received().EntityAdded(entity);
             family2.Received().EntityAdded(entity);
@@ -205,15 +205,15 @@ namespace Ash.Core
             var engine = new Engine(factory);
             var entity = new MockEntity<MockComponentA>();
 
-            var family1 = Substitute.For<IFamily<MockNode<MockComponentA>>>();
-            var family2 = Substitute.For<IFamily<MockNode<MockComponentA>>>();
-            factory.Produce<MockNode<MockComponentA>>().Returns(family1, family2);
+            var family1 = Substitute.For<IFamily<Node<MockComponentA>>>();
+            var family2 = Substitute.For<IFamily<Node<MockComponentA>>>();
+            factory.Produce<Node<MockComponentA>>().Returns(family1, family2);
 
-            engine.GetNodes<MockNode<MockComponentA>>();
+            engine.GetNodes<Node<MockComponentA>>();
             engine.AddEntity(entity);
-            engine.ReleaseNodes<MockNode<MockComponentA>>();
+            engine.ReleaseNodes<Node<MockComponentA>>();
             engine.RemoveEntity(entity);
-            engine.GetNodes<MockNode<MockComponentA>>();
+            engine.GetNodes<Node<MockComponentA>>();
 
             family1.Received().EntityAdded(entity);
             family2.DidNotReceive().EntityAdded(entity);
@@ -226,13 +226,13 @@ namespace Ash.Core
             var engine = new Engine(factory);
             var entity = new MockEntity<MockComponentA>();
 
-            var family1 = Substitute.For<IFamily<MockNode<MockComponentA>>>();
-            var family2 = Substitute.For<IFamily<MockNode<MockComponentB>>>();
-            factory.Produce<MockNode<MockComponentA>>().Returns(family1);
-            factory.Produce<MockNode<MockComponentB>>().Returns(family2);
+            var family1 = Substitute.For<IFamily<Node<MockComponentA>>>();
+            var family2 = Substitute.For<IFamily<Node<MockComponentB>>>();
+            factory.Produce<Node<MockComponentA>>().Returns(family1);
+            factory.Produce<Node<MockComponentB>>().Returns(family2);
 
-            engine.GetNodes<MockNode<MockComponentA>>();
-            engine.GetNodes<MockNode<MockComponentB>>();
+            engine.GetNodes<Node<MockComponentA>>();
+            engine.GetNodes<Node<MockComponentB>>();
             engine.AddEntity(entity);
 
             entity.ComponentAdded.Invoke(entity, typeof(MockComponentC));
@@ -248,13 +248,13 @@ namespace Ash.Core
             var engine = new Engine(factory);
             var entity = new MockEntity<MockComponentA>();
 
-            var family1 = Substitute.For<IFamily<MockNode<MockComponentA>>>();
-            var family2 = Substitute.For<IFamily<MockNode<MockComponentB>>>();
-            factory.Produce<MockNode<MockComponentA>>().Returns(family1);
-            factory.Produce<MockNode<MockComponentB>>().Returns(family2);
+            var family1 = Substitute.For<IFamily<Node<MockComponentA>>>();
+            var family2 = Substitute.For<IFamily<Node<MockComponentB>>>();
+            factory.Produce<Node<MockComponentA>>().Returns(family1);
+            factory.Produce<Node<MockComponentB>>().Returns(family2);
 
-            engine.GetNodes<MockNode<MockComponentA>>();
-            engine.GetNodes<MockNode<MockComponentB>>();
+            engine.GetNodes<Node<MockComponentA>>();
+            engine.GetNodes<Node<MockComponentB>>();
             engine.AddEntity(entity);
 
             entity.ComponentRemoved.Invoke(entity, typeof(MockComponentC));
@@ -270,13 +270,13 @@ namespace Ash.Core
             var engine = new Engine(factory);
             var entity = new MockEntity<MockComponentA>();
 
-            var family1 = Substitute.For<IFamily<MockNode<MockComponentA>>>();
-            var family2 = Substitute.For<IFamily<MockNode<MockComponentB>>>();
-            factory.Produce<MockNode<MockComponentA>>().Returns(family1);
-            factory.Produce<MockNode<MockComponentB>>().Returns(family2);
+            var family1 = Substitute.For<IFamily<Node<MockComponentA>>>();
+            var family2 = Substitute.For<IFamily<Node<MockComponentB>>>();
+            factory.Produce<Node<MockComponentA>>().Returns(family1);
+            factory.Produce<Node<MockComponentB>>().Returns(family2);
 
-            engine.GetNodes<MockNode<MockComponentA>>();
-            engine.GetNodes<MockNode<MockComponentB>>();
+            engine.GetNodes<Node<MockComponentA>>();
+            engine.GetNodes<Node<MockComponentB>>();
             engine.AddEntity(entity);
             engine.RemoveEntity(entity);
 
