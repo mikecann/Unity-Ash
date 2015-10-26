@@ -36,6 +36,11 @@ namespace Ash.Core
             return gameObject.GetComponent(type);
         }
 
+        public void Destroy()
+        {
+            GameObject.Destroy(gameObject);
+        }
+
         public T Add<T>() where T : Component
         {
             var component = gameObject.AddComponent<T>();
