@@ -8,7 +8,7 @@ namespace Ash.Core
 {
     public class Engine : IEngine
     {
-        private List<PrioritizedSystem> _systems;
+        private List<SystemPriorityPair> _systems;
         private Dictionary<Type, IFamily> _families;
         private IFamilyFactory _familyFactory;
         private List<IEntity> _entities;
@@ -17,7 +17,7 @@ namespace Ash.Core
         {
             Current = this;
             _familyFactory = familyFactory ?? new ComponentMatchingFamilyFactory();
-            _systems = new List<PrioritizedSystem>();
+            _systems = new List<SystemPriorityPair>();
             _families = new Dictionary<Type, IFamily>();
             _entities = new List<IEntity>();
         }
@@ -58,7 +58,7 @@ namespace Ash.Core
 
         public void AddSystem(ISystem system, int priority)
         {
-            _systems.Add(new PrioritizedSystem(system, priority));
+            _systems.Add(new SystemPriorityPair(system, priority));
             _systems = _systems.OrderBy(s => s.Priority).ToList();
             system.AddedToEngine(this);
         }
