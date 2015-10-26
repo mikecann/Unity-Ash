@@ -8,14 +8,9 @@ namespace Ash.Helpers
 {
     public class NodelssSystem<T1,T2> : ISystem
     {
-        private readonly Action<T1, T2> _updateCallback;
+        protected Action<T1, T2> _updateCallback;
         private IEnumerable<Node<T1, T2>> _nodes;
-
-        public NodelssSystem(Action<T1,T2> updateCallback)
-        {
-            _updateCallback = updateCallback;
-        }
-
+ 
         public void AddedToEngine(Engine engine)
         {
             _nodes = engine.GetNodes<Node<T1, T2>>();
