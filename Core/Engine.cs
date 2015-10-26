@@ -10,24 +10,48 @@ namespace Ash.Core
         private List<PrioritizedSystem> _systems;
         private Dictionary<Type, IFamily> _families;
         private IFamilyFactory _familyFactory;
+        private List<IEntity> _entities;
 
         public Engine(IFamilyFactory familyFactory = null)
         {
             _familyFactory = familyFactory ?? new ComponentMatchingFamilyFactory();
             _systems = new List<PrioritizedSystem>();
             _families = new Dictionary<Type, IFamily>();
+            _entities = new List<IEntity>();
         }
 
         public void AddEntity(IEntity entity)
         {
             foreach (var pair in _families)
                 pair.Value.EntityAdded(entity);
+
+            entity.ComponentAdded.AddListener(OnComponentAdded);
+            entity.ComponentRemoved.AddListener(OnComponentRemoved);
+
+            _entities.Add(entity);
+        }
+
+        private void OnComponentRemoved(IEntity entity, Type component)
+        {
+            foreach (var pair in _families)
+                pair.Value.ComponentRemoved(entity, component);
+        }
+
+        private void OnComponentAdded(IEntity entity, Type component)
+        {
+            foreach (var pair in _families)
+                pair.Value.ComponentAdded(entity, component);
         }
 
         public void RemoveEntity(IEntity entity)
         {
             foreach (var pair in _families)
                 pair.Value.EntityRemoved(entity);
+
+            entity.ComponentAdded.RemoveListener(OnComponentAdded);
+            entity.ComponentRemoved.RemoveListener(OnComponentRemoved);
+
+            _entities.Remove(entity);
         }
 
         public void AddSystem(ISystem system, int priority)
@@ -54,6 +78,9 @@ namespace Ash.Core
             {
                 family = _familyFactory.Produce<T>();
                 _families[type] = family;
+
+                foreach (var entity in _entities)
+                    family.EntityAdded(entity);
             }
 
             return family.Nodes;

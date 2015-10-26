@@ -7,5 +7,9 @@ namespace Ash.Core
 {
     public interface IEntity
     {
+        bool HasComponent(Type type);
+        object GetComponent(Type type);
+        ComponentAdded ComponentAdded { get; }
+        ComponentRemoved ComponentRemoved { get; }
     }
 }
