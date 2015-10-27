@@ -15,12 +15,18 @@ namespace Ash.Core
 
             var obj = new GameObject();
             var entity = obj.AddComponent<Entity>();
-            entity.Add<SpriteRenderer>();
+            var renderer = entity.Add<SpriteRenderer>();
 
             var nodes = engine.GetNodes<Node<SpriteRenderer>>();
-            
+
             if (nodes.Count() == 1)
-                IntegrationTest.Pass();
+            {
+                var node = nodes.First();
+                if (node.Entity == entity && node.Component1 == renderer)
+                    IntegrationTest.Pass();
+                else
+                    IntegrationTest.Fail();
+            }
             else
                 IntegrationTest.Fail();
         }

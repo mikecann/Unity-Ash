@@ -99,7 +99,7 @@ namespace Ash.Core
 
             Assert.IsTrue(nodes1.Count() == nodes2.Count());
             Assert.IsTrue(nodes1.ToList()[0] == nodes2.ToList()[0]);
-            Assert.IsTrue(nodes1.ToList()[0].component1 == nodes2.ToList()[0].component1);
+            Assert.IsTrue(nodes1.ToList()[0].Component1 == nodes2.ToList()[0].Component1);
         }
 
         [Test]

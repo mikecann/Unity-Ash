@@ -40,12 +40,12 @@ namespace Ash.Core
             IntegrationTest.Pass();
         }
 
-        private Entity AddEntity()
-        {
-            var obj = new GameObject();
-            var entity = obj.AddComponent<Entity>();
-            var renderer = entity.Add<SpriteRenderer>();
-            return entity;
-        }
+        //private Entity AddEntity()
+        //{
+        //    var obj = new GameObject();
+        //    var entity = obj.AddComponent<Entity>();
+        //    var renderer = entity.Add<SpriteRenderer>();
+        //    return entity;
+        //}
     }
 }

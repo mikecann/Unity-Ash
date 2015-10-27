@@ -38,7 +38,8 @@ namespace Ash.Core
             family.EntityAdded(entityA);
 
             Assert.AreEqual(family.Nodes.Count(), 1);
-            Assert.AreEqual(family.Nodes.First().component1, entityA.Components[0]);
+            Assert.AreEqual(family.Nodes.First().Entity, entityA);
+            Assert.AreEqual(family.Nodes.First().Component1, entityA.Components[0]);
         }
 
         [Test]
@@ -50,7 +51,9 @@ namespace Ash.Core
             family.EntityAdded(entityA);
 
             Assert.AreEqual(family.Nodes.Count(), 1);
-            Assert.AreEqual(family.Nodes.First().component1, entityA.Components[0]);
+            Assert.AreEqual(family.Nodes.First().Entity, entityA);
+            Assert.AreEqual(family.Nodes.First().Component1, entityA.Components[0]);
+            Assert.AreEqual(family.Nodes.First().Component2, entityA.Components[1]);
         }
 
         [Test]
@@ -75,12 +78,12 @@ namespace Ash.Core
             family.EntityAdded(entity1);
 
             Assert.AreEqual(family.Nodes.Count(), 1);
-            Assert.AreEqual(family.Nodes.ToList()[0].component1, entity1.Components[0]);
+            Assert.AreEqual(family.Nodes.ToList()[0].Component1, entity1.Components[0]);
 
             family.EntityAdded(entity2);
 
             Assert.AreEqual(family.Nodes.Count(), 2);
-            Assert.AreEqual(family.Nodes.ToList()[1].component1, entity2.Components[0]);
+            Assert.AreEqual(family.Nodes.ToList()[1].Component1, entity2.Components[0]);
         }
 
         [Test]
@@ -107,7 +110,7 @@ namespace Ash.Core
             family.EntityAdded(entity2);
 
             Assert.IsTrue(family.Nodes.Count() == 1);
-            Assert.IsTrue(family.Nodes.First().component1 == entity1.Components[0]);
+            Assert.IsTrue(family.Nodes.First().Component1 == entity1.Components[0]);
         }
 
         [Test]
@@ -138,7 +141,7 @@ namespace Ash.Core
             family.EntityRemoved(entity1);
 
             Assert.IsTrue(family.Nodes.Count() == 1);
-            Assert.IsTrue(family.Nodes.First().component1 == entity2.Components[0]);
+            Assert.IsTrue(family.Nodes.First().Component1 == entity2.Components[0]);
         }
 
         [Test]
@@ -146,6 +149,8 @@ namespace Ash.Core
         {
             var pool = Substitute.For<INodePool<Node<MockComponentA>>>();
             var family = new ComponentMatchingFamily<Node<MockComponentA>>(pool);
+
+            pool.UnPool().Returns(new Node<MockComponentA>());
 
             var entity1 = new MockEntity<MockComponentA>();
             family.EntityAdded(entity1);
@@ -179,7 +184,7 @@ namespace Ash.Core
             family.ComponentAdded(entityA, typeof(MockComponentA));
 
             Assert.AreEqual(family.Nodes.Count(), 1);
-            Assert.AreEqual(family.Nodes.First().component1, entityA.Components[0]);
+            Assert.AreEqual(family.Nodes.First().Component1, entityA.Components[0]);
         }
 
         [Test]
@@ -192,7 +197,7 @@ namespace Ash.Core
             family.ComponentAdded(entityA, typeof(MockComponentB));
 
             Assert.AreEqual(family.Nodes.Count(), 1);
-            Assert.AreEqual(family.Nodes.First().component1, entityA.Components[0]);
+            Assert.AreEqual(family.Nodes.First().Component1, entityA.Components[0]);
         }
 
         [Test]
@@ -219,12 +224,12 @@ namespace Ash.Core
             family.EntityAdded(entity2);
 
             Assert.AreEqual(family.Nodes.Count(), 1);
-            Assert.AreEqual(family.Nodes.ToList()[0].component1, entity1.Components[0]);
+            Assert.AreEqual(family.Nodes.ToList()[0].Component1, entity1.Components[0]);
 
             family.ComponentRemoved(entity2, typeof(MockComponentA));
 
             Assert.AreEqual(family.Nodes.Count(), 1);
-            Assert.AreEqual(family.Nodes.ToList()[0].component1, entity1.Components[0]);
+            Assert.AreEqual(family.Nodes.ToList()[0].Component1, entity1.Components[0]);
         }
 
         [Test]
@@ -237,7 +242,7 @@ namespace Ash.Core
             family.ComponentRemoved(entityA, typeof(MockComponentB));
 
             Assert.AreEqual(family.Nodes.Count(), 1);
-            Assert.AreEqual(family.Nodes.ToList()[0].component1, entityA.Components[0]);
+            Assert.AreEqual(family.Nodes.ToList()[0].Component1, entityA.Components[0]);
         }
 
         //[Test]

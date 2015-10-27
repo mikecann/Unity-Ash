@@ -19,11 +19,12 @@ namespace Ash.Core
         {
             ComponentAdded = new ComponentAdded();
             ComponentRemoved = new ComponentRemoved();
+            _components = new List<object>();
         }
 
         public bool Has(Type type)
         {
-            return _components.Any(c => c.GetType() == type);
+            return _components.Any(c => type.IsAssignableFrom(c.GetType()));
         }
 
         public object Get(Type type)
@@ -31,17 +32,19 @@ namespace Ash.Core
             if (!Has(type))
                 throw new Exception("Invalid type");
 
-            return _components.FirstOrDefault(c => c.GetType() == type);
+            return _components.FirstOrDefault(c => type.IsAssignableFrom(c.GetType()));
         }
 
         public T Add<T>() where T : Component
         {
-            throw new NotImplementedException();
+            var inst = Activator.CreateInstance<T>();
+            _components.Add(inst);
+            return inst;
         }
 
         public void Remove(Component component)
         {
-            throw new NotImplementedException();
+            _components.Remove(component);
         }
 
         public ComponentAdded ComponentAdded { get; private set; }
@@ -52,10 +55,7 @@ namespace Ash.Core
     {
         public MockEntity()
         {
-            _components = new List<object>()
-            {
-                Activator.CreateInstance<T1>()
-            };
+            _components.Add(Activator.CreateInstance<T1>());
         }
     }
 
@@ -63,11 +63,8 @@ namespace Ash.Core
     {
         public MockEntity()
         {
-            _components = new List<object>()
-            {
-                Activator.CreateInstance<T1>(),
-                Activator.CreateInstance<T2>()
-            };
+            _components.Add(Activator.CreateInstance<T1>());
+            _components.Add(Activator.CreateInstance<T2>());
         }
     }
 
@@ -75,12 +72,9 @@ namespace Ash.Core
     {
         public MockEntity()
         {
-            _components = new List<object>()
-            {
-                Activator.CreateInstance<T1>(),
-                Activator.CreateInstance<T2>(),
-                Activator.CreateInstance<T3>()
-            };
+            _components.Add(Activator.CreateInstance<T1>());
+            _components.Add(Activator.CreateInstance<T2>());
+            _components.Add(Activator.CreateInstance<T3>());
         }
     }
 }

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Assets.Libraries.Unity_Ash.Core;
 
 namespace Ash.Core
 {
-    public class ComponentMatchingFamily<T> : IFamily<T>
+    public class ComponentMatchingFamily<T> : IFamily<T> where T : INode
     {
         private Dictionary<IEntity, T> _nodes;
-        private Dictionary<Type, FieldInfo> _components;
+        private Dictionary<Type, PropertyInfo> _components;
         private INodePool<T> _pool;
 
         public ComponentMatchingFamily(INodePool<T> pool = null)
@@ -21,11 +22,10 @@ namespace Ash.Core
 
         private void Init()
         {
-            var bindingFlags = BindingFlags.Instance | BindingFlags.Public;
             var type = typeof (T);
-
-            _components = type.GetFields(bindingFlags)
-                .ToDictionary(fi => fi.FieldType, fi => fi);
+            _components = type.GetProperties()
+                .Where(p => p.Name != "Entity")
+                .ToDictionary(i => i.PropertyType, i => i);
         }
 
         public void ComponentAdded(IEntity entity, Type componentType)
@@ -78,9 +78,10 @@ namespace Ash.Core
 
             var node = _pool.UnPool();
             _nodes[entity] = node;
+            node.Entity = entity;
 
             foreach (var pair in _components)
-                pair.Value.SetValue(node, entity.Get(pair.Key));
+                pair.Value.SetValue(node, entity.Get(pair.Key), null);
         }
 
         public IEnumerable<T> Nodes
