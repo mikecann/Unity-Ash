@@ -51,17 +51,11 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Analytics">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
@@ -74,23 +68,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\ComponentMatchingFamily.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\ComponentMatchingFamilyFactory.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\Engine.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\Entity.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\Events.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\Exceptions.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\IEngine.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\IEntity.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\IFamily.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\IFamilyFactory.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\INode.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\INodePool.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\ISystem.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\NodePool.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\Nodes.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Core\SystemPriorityPair.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Helpers\NodelssSystems.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\ComponentMatchingFamily.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\ComponentMatchingFamilyFactory.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\Engine.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\Entity.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\Events.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\Exceptions.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\IEngine.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\IEntity.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\IFamily.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\IFamilyFactory.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\INode.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\INodePool.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\ISystem.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\NodePool.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\Nodes.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\SystemPriorityPair.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Helpers\NodelssSystems.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Helpers\FakeEntity.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Helpers\MockComponents.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Helpers\MockEntities.cs" />
