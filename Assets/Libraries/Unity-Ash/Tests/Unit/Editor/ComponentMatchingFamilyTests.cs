@@ -38,7 +38,6 @@ namespace Ash.Core
             family.EntityAdded(entityA);
 
             Assert.AreEqual(family.Nodes.Count(), 1);
-            Assert.AreEqual(family.Nodes.First().Entity, entityA);
             Assert.AreEqual(family.Nodes.First().Component1, entityA.Components[0]);
         }
 
@@ -51,7 +50,6 @@ namespace Ash.Core
             family.EntityAdded(entityA);
 
             Assert.AreEqual(family.Nodes.Count(), 1);
-            Assert.AreEqual(family.Nodes.First().Entity, entityA);
             Assert.AreEqual(family.Nodes.First().Component1, entityA.Components[0]);
             Assert.AreEqual(family.Nodes.First().Component2, entityA.Components[1]);
         }

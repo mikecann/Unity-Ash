@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Assets.Libraries.Unity_Ash.Core;
 
 namespace Ash.Core
 {
-    public class ComponentMatchingFamily<T> : IFamily<T> where T : INode
+    public class ComponentMatchingFamily<T> : IFamily<T>
     {
         private Dictionary<IEntity, T> _nodes;
         private Dictionary<Type, PropertyInfo> _components;
@@ -24,7 +23,6 @@ namespace Ash.Core
         {
             var type = typeof (T);
             _components = type.GetProperties()
-                .Where(p => p.Name != "Entity")
                 .ToDictionary(i => i.PropertyType, i => i);
         }
 
@@ -78,7 +76,6 @@ namespace Ash.Core
 
             var node = _pool.UnPool();
             _nodes[entity] = node;
-            node.Entity = entity;
 
             foreach (var pair in _components)
                 pair.Value.SetValue(node, entity.Get(pair.Key), null);

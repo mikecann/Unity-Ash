@@ -22,7 +22,7 @@ namespace Ash.Core
             if (nodes.Count() == 1)
             {
                 var node = nodes.First();
-                if (node.Entity == entity && node.Component1 == renderer)
+                if (node.Component1 == renderer)
                     IntegrationTest.Pass();
                 else
                     IntegrationTest.Fail();

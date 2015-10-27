@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.Libraries.Unity_Ash.Core;
 
 namespace Ash.Core
 {
-    public class Node : INode
+    public class Node
     {
-        public IEntity Entity { get; set; }
     }
 
     public class Node<T> : Node

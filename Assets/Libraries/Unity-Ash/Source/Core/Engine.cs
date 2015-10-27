@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.Libraries.Unity_Ash.Core;
 using UnityEngine;
 
 namespace Ash.Core
@@ -70,7 +69,7 @@ namespace Ash.Core
             system.RemovedFromEngine(this);
         }
 
-        public IEnumerable<T> GetNodes<T>() where T : INode
+        public IEnumerable<T> GetNodes<T>()
         {
             var type = typeof (T);
             IFamily<T> family;
