@@ -15,6 +15,6 @@ namespace Ash.Core
 
     public interface IFamily<T> : IFamily
     {
-        IEnumerable<T> Nodes { get; }
+        INodeList<T> Nodes { get; }
     }
 }

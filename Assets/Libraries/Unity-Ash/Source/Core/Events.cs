@@ -14,4 +14,12 @@ namespace Ash.Core
     public class ComponentRemoved : UnityEvent<IEntity, Type>
     {
     }
+
+    public class NodeAdded<T> : UnityEvent<T>
+    {
+    }
+
+    public class NodeRemoved<T> : UnityEvent<T>
+    {
+    }
 }

@@ -81,7 +81,9 @@
     <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\IFamily.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\IFamilyFactory.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\INodePool.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\INodelist.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\ISystem.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\NodeList.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\NodePool.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\Nodes.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Source\Core\SystemPriorityPair.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Helpers\MockSystem.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestAddedEntityRemoved.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestDestroyingAnEntityMidUpdateUpdatesOthers.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestAddingAndRemovingEntitiesDispatchesEvents.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestMatchingEntityAdded.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestNonMatchingEntityNotAdded.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestRemovingMatchingComponent.cs" />

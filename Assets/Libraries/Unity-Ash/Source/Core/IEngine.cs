@@ -11,6 +11,6 @@ namespace Ash.Core
         void RemoveEntity(IEntity entity);
         void AddSystem(ISystem system, int priority);
         void RemoveSystem(ISystem system);
-        IEnumerable<T> GetNodes<T>();
+        INodeList<T> GetNodes<T>();
     }
 }

@@ -1,165 +1,37 @@
 ![logo](http://i.imgur.com/Wpsk1fy.png)
 
-
-CURRENTLY GOING THROUGH A REWRITE!!
-=============================
-
-
-
-
-
-
 Unity-Ash
 =============
 
-A working port of [Richard Lord's Ash Game Framework](https://github.com/richardlord/Ash) for Unity. It uses [David Arno's .Net port](https://github.com/DavidArno/Ash.NET) of Ash for most of the heavy-lifting.
+An Entity / Component framework for Unity heavily inspired by [Richard Lord's Ash Game Framework](https://github.com/richardlord/Ash).
 
-More info on the blog post: http://www.mikecann.co.uk/myprojects/unityasteroids/unity-ashteroids-ash-framework-in-unity/
-
-Usage
+Examples
 -----
 
-1. Extend AshGame, add your systems in Awake (see [Unity Ashteroids](https://github.com/mikecann/UnityAshteroids) for an example of this)
-2. Create a GameObject and add your new AshGame Component.
-3. Create your GameObjects as usual but Add an Entity to each one. 
+[Unity Ashteroids](https://github.com/mikecann/UnityAshteroids)
 
-Thats it! The Entity will detect when components or added. The Systems will be updated with the latest NodeLists based on the component changes.
+Usage
+----
 
-Notes on Performance
------------
+There currently isnt a .unitypackage while the framework in is in flux, instead just clone this repo and copy the contents of "Assets/Libraries/Unity-Ash/Source" to your project.
 
-Entity works by calling GetComponents<> in its update loop then checking to see if any components have been added or removed since the last update. As such this is quite an expensive process so Entity contains an "updateFrequency" variable that you can use to toggle how often you want Entity to check for component changes. 
+Checkout [Ashteroids](https://github.com/mikecann/UnityAshteroids) for a full example but some quick tips:
 
-![update frequency](http://i.imgur.com/mK5oWBW.png)
++ Add the Entity Monobehaviour to any GameObject you wish to be detected by Ash.
++ Dont add or remove components from GameObject directly, instead use Entity.Add() and Remove().
 
-If you know that a type of GameObject will never have components added or removed then set the updateFrequency to Never and enjoy native performance.
+Tests
+-----
 
-Known Issues
-------------
+The project uses Unity Test tools for unit and intergration tests. Open the test tools from the menu in Unity and run.
 
-+ Although Unity allows for multiple components of the same type Ash doesn't, don't try to use multiple components of the same type.
+Differences from Ash
+----
 
-Potential Improvements
-----------------------
+There are a number of differences from Ash which is why this project is not a straight port and is instead inspired by the Ash Framework.
 
-### List Iterating System
-
-AS3 had the ListIteratingSystem which simplified iterating over nodes in a NodeList. With proper generics in C# we should be able to improve on that.
-
-For example the current BulletAgeSystem from the [Unity Ashteroids](https://github.com/mikecann/UnityAshteroids) example project currently looks like:
-
-```
-public class BulletAgeSystem : SystemBase
-{
-    private EntityCreator creator;
-
-    private NodeList nodes;
-
-    public BulletAgeSystem(EntityCreator creator)
-    {
-        this.creator = creator;
-    }
-
-    override public void AddToGame(IGame game)
-    {
-        nodes = game.GetNodeList<BulletAgeNode>();
-    }
-
-    override public void Update(float time)
-    {
-        for (var node = (BulletAgeNode)nodes.Head; node != null; node = (BulletAgeNode)node.Next)
-        {
-            var bullet = node.Bullet;
-            bullet.lifeRemaining -= time;
-            if (bullet.lifeRemaining <= 0)
-            {
-                creator.DestroyEntity(node.Entity);
-            }
-        }
-    }
-
-    override public void RemoveFromGame(IGame game)
-    {
-        nodes = null;
-    }
-}
-```
-
-With a ListIteratingSystem it could look like:
-
-```
-public class ListIteratingSystem<BulletAgeNode>
-{
-    private EntityCreator creator;
-
-    public BulletAgeSystem(EntityCreator creator)
-    {
-        this.creator = creator;
-    }
-
-    override public void Update(BulletAgeNode node, float time)
-    {
-        var bullet = node.Bullet;
-        bullet.lifeRemaining -= time;
-        if (bullet.lifeRemaining <= 0)
-        {
-            creator.DestroyEntity(node.Entity);
-        }
-    }
-}
-```
-
-The ListIteratingSystem could contain variants that support multiple node list e.g. ListIteratingSystm<T1,T2,T3,T4>
-
-The ListIteratingSystem would improve total performance too as it would remove the uneccessary casting of nodes.
-
-### Remove Linked Lists
-
-Ash in AS3 used linked lists for much of its internals (NodeList, SystemList, EntityList) due to performance issues in AS3. 
-
-In C# we have generic Lists and thus the performance issues are much less of a worry and so we can probably do away with the linked lists and use normal Lists instead which would greatly simplify things.
-
-For example it would change the following:
-
-```
-for (var asteroid = (AsteroidCollisionNode)asteroids.Head; asteroid!=null; asteroid = (AsteroidCollisionNode)asteroid.Next) {}
-```
-
-into
-
-```
-foreach(var asteroid in asteroids) {}
-```
-
-### Simplify Confusing Entity / EntityBase
-
-Currently Entity extends EntityBase which contains Add / Remove component methods. This is because EntityBase was taken straight from the .Net port (with minor changes).
-
-Ideally Entity and EntityBase should be merged. Adding a component to Entity should just add the component to the GameObject.
-
-### Simplify Components
-
-There shouldnt be a disconnect between an Ash Component and a Unity Component.
-
-Ash Components dont have to extend UnityEngine.Component whereas Unity components do. 
-
-Because this is Ash for Unity we should follow Unity and force the fact that all components should extend UnityEngine.Component.
-
-### Remove Time From Systems
-
-Because we are dealing with Unity we have access to the UnityEngine.Time class which gives us much more info about the current frame and thus systems dont need to have time passed to them in their Update methods.
-
-### Generic Nodes
-
-Nodes could be made generic so that we dont have to cast when accessing Next and Previous, for example currently its
-
-```
-var movement = (MovementNode)node.Next
-```
-
-If nodes were generic then it would become simply:
-
-```
-var movement = node.Next;
-```
-
++ NodeList's are externally immutable
++ Explicit Node classes are optional, the generic Node class can be used instead.
++ Nodes can be of any type but the components must be exposed as Properties
++ For performance reasons Entities use a static lookup for the current Engine.
++ Systems dont contain the Priority property, instead it is supplied when added to the Engine.

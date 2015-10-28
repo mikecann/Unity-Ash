@@ -82,8 +82,8 @@ namespace Ash.Core
         [Test]
         public void IfTwoNodeTypesAreReturned_DifferentFamiliesAreReturned()
         {
-            var nodes1 = _engine.GetNodes<Node>();
-            var nodes2 = _engine.GetNodes<Node>();
+            var nodes1 = _engine.GetNodes<Node<MockComponentA>>();
+            var nodes2 = _engine.GetNodes<Node<MockComponentB>>();
             Assert.IsTrue(nodes1 != nodes2);
         }
 

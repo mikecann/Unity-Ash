@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.2.2f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -139,6 +141,7 @@
   <ItemGroup>
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Unit\Editor\ComponentMatchingFamilyTests.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Unit\Editor\EngineTests.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Tests\Unit\Editor\NodeListTests.cs" />
     <Compile Include="Assets\Libraries\UnityTestTools\Assertions\Editor\AssertionComponentEditor.cs" />
     <Compile Include="Assets\Libraries\UnityTestTools\Assertions\Editor\AssertionExplorerWindow.cs" />
     <Compile Include="Assets\Libraries\UnityTestTools\Assertions\Editor\AssertionListRenderer.cs" />
