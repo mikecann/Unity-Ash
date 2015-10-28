@@ -88,7 +88,7 @@ namespace Ash.Core
             return family.Nodes;
         }
 
-        public void ReleaseNodes<T>()
+        public void ReleaseNodes<T>(INodeList<T> nodes)
         {
             var type = typeof(T);
             if (!_families.ContainsKey(type))

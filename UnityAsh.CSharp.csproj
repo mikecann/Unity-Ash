@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.2.2f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -93,8 +91,8 @@
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Helpers\MockEntities.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Helpers\MockSystem.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestAddedEntityRemoved.cs" />
-    <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestDestroyingAnEntityMidUpdateUpdatesOthers.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestAddingAndRemovingEntitiesDispatchesEvents.cs" />
+    <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestDestroyingAnEntityMidUpdateUpdatesOthers.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestMatchingEntityAdded.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestNonMatchingEntityNotAdded.cs" />
     <Compile Include="Assets\Libraries\Unity-Ash\Tests\Integration\TestRemovingMatchingComponent.cs" />

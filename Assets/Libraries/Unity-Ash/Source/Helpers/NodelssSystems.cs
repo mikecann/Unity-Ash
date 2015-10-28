@@ -28,17 +28,36 @@ namespace Ash.Helpers
     public class NodelessSystem<T1> : NodelessSystem
     {
         protected Action<float, T1> _updateCallback;
+        protected Action<T1> _nodeAddedCallback;
+        protected Action<T1> _nodeRemovedCallback;
 
-        private IEnumerable<Node<T1>> _nodes;
+        private INodeList<Node<T1>> _nodes;
 
         override public void AddedToEngine(Engine engine)
         {
             _nodes = engine.GetNodes<Node<T1>>();
+            _nodes.NodeAddedEvent.AddListener(OnNodeAdded);
+            _nodes.NodeRemovedEvent.AddListener(OnNodeRemoved);
             base.AddedToEngine(engine);
+        }
+
+        private void OnNodeRemoved(Node<T1> node)
+        {
+            if (_nodeRemovedCallback != null)
+                _nodeRemovedCallback(node.Component1);
+        }
+
+        private void OnNodeAdded(Node<T1> node)
+        {
+            if (_nodeAddedCallback != null)
+                _nodeAddedCallback(node.Component1);
         }
 
         override public void RemovedFromEngine(Engine engine)
         {
+            _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
+            _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
+            engine.ReleaseNodes(_nodes);
         }
 
         override public void Update(float delta)
@@ -52,8 +71,10 @@ namespace Ash.Helpers
     public class NodelessSystem<T1,T2> : NodelessSystem
     {
         protected Action<float, T1, T2> _updateCallback;
+        protected Action<T1, T2> _nodeAddedCallback;
+        protected Action<T1, T2> _nodeRemovedCallback;
 
-        private IEnumerable<Node<T1, T2>> _nodes;
+        private INodeList<Node<T1, T2>> _nodes;
  
         override public void AddedToEngine(Engine engine)
         {
@@ -61,8 +82,23 @@ namespace Ash.Helpers
             base.AddedToEngine(engine);
         }
 
+        private void OnNodeRemoved(Node<T1,T2> node)
+        {
+            if (_nodeRemovedCallback != null)
+                _nodeRemovedCallback(node.Component1, node.Component2);
+        }
+
+        private void OnNodeAdded(Node<T1,T2> node)
+        {
+            if (_nodeAddedCallback != null)
+                _nodeAddedCallback(node.Component1, node.Component2);
+        }
+
         override public void RemovedFromEngine(Engine engine)
         {
+            _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
+            _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
+            engine.ReleaseNodes(_nodes);
         }
 
         override public void Update(float delta)
@@ -76,8 +112,10 @@ namespace Ash.Helpers
     public class NodelessSystem<T1, T2, T3> : NodelessSystem
     {
         protected Action<float, T1, T2, T3> _updateCallback;
+        protected Action<T1, T2, T3> _nodeAddedCallback;
+        protected Action<T1, T2, T3> _nodeRemovedCallback;
 
-        private IEnumerable<Node<T1, T2, T3>> _nodes;
+        private INodeList<Node<T1, T2, T3>> _nodes;
 
         override public void AddedToEngine(Engine engine)
         {
@@ -85,8 +123,23 @@ namespace Ash.Helpers
             base.AddedToEngine(engine);
         }
 
+        private void OnNodeRemoved(Node<T1, T2, T3> node)
+        {
+            if (_nodeRemovedCallback != null)
+                _nodeRemovedCallback(node.Component1, node.Component2, node.Component3);
+        }
+
+        private void OnNodeAdded(Node<T1, T2, T3> node)
+        {
+            if (_nodeAddedCallback != null)
+                _nodeAddedCallback(node.Component1, node.Component2, node.Component3);
+        }
+
         override public void RemovedFromEngine(Engine engine)
         {
+            _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
+            _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
+            engine.ReleaseNodes(_nodes);
         }
 
         override public void Update(float delta)
@@ -100,13 +153,27 @@ namespace Ash.Helpers
     public class NodelessSystem<T1, T2, T3, T4> : NodelessSystem
     {
         protected Action<float, T1, T2, T3, T4> _updateCallback;
+        protected Action<T1, T2, T3, T4> _nodeAddedCallback;
+        protected Action<T1, T2, T3, T4> _nodeRemovedCallback;
 
-        private IEnumerable<Node<T1, T2, T3, T4>> _nodes;
+        private INodeList<Node<T1, T2, T3, T4>> _nodes;
 
         override public void AddedToEngine(Engine engine)
         {
             _nodes = engine.GetNodes<Node<T1, T2, T3, T4>>();
             base.AddedToEngine(engine);
+        }
+
+        private void OnNodeRemoved(Node<T1, T2, T3, T4> node)
+        {
+            if (_nodeRemovedCallback != null)
+                _nodeRemovedCallback(node.Component1, node.Component2, node.Component3, node.Component4);
+        }
+
+        private void OnNodeAdded(Node<T1, T2, T3, T4> node)
+        {
+            if (_nodeAddedCallback != null)
+                _nodeAddedCallback(node.Component1, node.Component2, node.Component3, node.Component4);
         }
 
         override public void RemovedFromEngine(Engine engine)
@@ -125,8 +192,10 @@ namespace Ash.Helpers
     public class NodelessSystem<T1, T2, T3, T4, T5> : NodelessSystem
     {
         protected Action<float, T1, T2, T3, T4, T5> _updateCallback;
+        protected Action<T1, T2, T3, T4, T5> _nodeAddedCallback;
+        protected Action<T1, T2, T3, T4, T5> _nodeRemovedCallback;
 
-        private IEnumerable<Node<T1, T2, T3, T4, T5>> _nodes;
+        private INodeList<Node<T1, T2, T3, T4, T5>> _nodes;
 
         override public void AddedToEngine(Engine engine)
         {
@@ -134,8 +203,25 @@ namespace Ash.Helpers
             base.AddedToEngine(engine);
         }
 
+        private void OnNodeRemoved(Node<T1, T2, T3, T4, T5> node)
+        {
+            if (_nodeRemovedCallback != null)
+                _nodeRemovedCallback(node.Component1, node.Component2, node.Component3,
+                    node.Component4, node.Component5);
+        }
+
+        private void OnNodeAdded(Node<T1, T2, T3, T4, T5> node)
+        {
+            if (_nodeAddedCallback != null)
+                _nodeAddedCallback(node.Component1, node.Component2, node.Component3,
+                    node.Component4, node.Component5);
+        }
+
         override public void RemovedFromEngine(Engine engine)
         {
+            _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
+            _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
+            engine.ReleaseNodes(_nodes);
         }
 
         override public void Update(float delta)
@@ -150,8 +236,10 @@ namespace Ash.Helpers
     public class NodelessSystem<T1, T2, T3, T4, T5, T6> : NodelessSystem
     {
         protected Action<float, T1, T2, T3, T4, T5, T6> _updateCallback;
+        protected Action<T1, T2, T3, T4, T5, T6> _nodeAddedCallback;
+        protected Action<T1, T2, T3, T4, T5, T6> _nodeRemovedCallback;
 
-        private IEnumerable<Node<T1, T2, T3, T4, T5, T6>> _nodes;
+        private INodeList<Node<T1, T2, T3, T4, T5, T6>> _nodes;
 
         override public void AddedToEngine(Engine engine)
         {
@@ -159,8 +247,25 @@ namespace Ash.Helpers
             base.AddedToEngine(engine);
         }
 
+        private void OnNodeRemoved(Node<T1, T2, T3, T4, T5, T6> node)
+        {
+            if (_nodeRemovedCallback != null)
+                _nodeRemovedCallback(node.Component1, node.Component2, node.Component3,
+                    node.Component4, node.Component5, node.Component6);
+        }
+
+        private void OnNodeAdded(Node<T1, T2, T3, T4, T5, T6> node)
+        {
+            if (_nodeAddedCallback != null)
+                _nodeAddedCallback(node.Component1, node.Component2, node.Component3,
+                    node.Component4, node.Component5, node.Component6);
+        }
+
         override public void RemovedFromEngine(Engine engine)
         {
+            _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
+            _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
+            engine.ReleaseNodes(_nodes);
         }
 
         override public void Update(float delta)
