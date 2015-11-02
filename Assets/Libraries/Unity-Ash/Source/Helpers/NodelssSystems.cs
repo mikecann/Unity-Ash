@@ -79,6 +79,8 @@ namespace Ash.Helpers
         override public void AddedToEngine(IEngine engine)
         {
             _nodes = engine.GetNodes<Node<T1, T2>>();
+            _nodes.NodeAddedEvent.AddListener(OnNodeAdded);
+            _nodes.NodeRemovedEvent.AddListener(OnNodeRemoved);
             base.AddedToEngine(engine);
         }
 
@@ -120,6 +122,8 @@ namespace Ash.Helpers
         override public void AddedToEngine(IEngine engine)
         {
             _nodes = engine.GetNodes<Node<T1, T2, T3>>();
+            _nodes.NodeAddedEvent.AddListener(OnNodeAdded);
+            _nodes.NodeRemovedEvent.AddListener(OnNodeRemoved);
             base.AddedToEngine(engine);
         }
 
@@ -161,6 +165,8 @@ namespace Ash.Helpers
         override public void AddedToEngine(IEngine engine)
         {
             _nodes = engine.GetNodes<Node<T1, T2, T3, T4>>();
+            _nodes.NodeAddedEvent.AddListener(OnNodeAdded);
+            _nodes.NodeRemovedEvent.AddListener(OnNodeRemoved);
             base.AddedToEngine(engine);
         }
 
@@ -200,6 +206,8 @@ namespace Ash.Helpers
         override public void AddedToEngine(IEngine engine)
         {
             _nodes = engine.GetNodes<Node<T1, T2, T3, T4, T5>>();
+            _nodes.NodeAddedEvent.AddListener(OnNodeAdded);
+            _nodes.NodeRemovedEvent.AddListener(OnNodeRemoved);
             base.AddedToEngine(engine);
         }
 
@@ -244,6 +252,8 @@ namespace Ash.Helpers
         override public void AddedToEngine(IEngine engine)
         {
             _nodes = engine.GetNodes<Node<T1, T2, T3, T4, T5, T6>>();
+            _nodes.NodeAddedEvent.AddListener(OnNodeAdded);
+            _nodes.NodeRemovedEvent.AddListener(OnNodeRemoved);
             base.AddedToEngine(engine);
         }
 
