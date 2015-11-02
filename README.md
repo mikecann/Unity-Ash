@@ -5,6 +5,8 @@ Unity-Ash
 
 An Entity / Component framework for Unity heavily inspired by [Richard Lord's Ash Game Framework](https://github.com/richardlord/Ash).
 
+More information on Unity-Ash can be found in this blog post: http://www.mikecann.co.uk/programming/unity-ash-a-different-way-of-thinking-about-making-games-in-unity/
+
 Examples
 -----
 
