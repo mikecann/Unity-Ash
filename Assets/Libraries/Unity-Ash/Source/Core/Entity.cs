@@ -31,6 +31,8 @@ namespace Ash.Core
             return gameObject.GetComponent(type) != null;
         }
 
+        public bool IsDestroyed { get; private set; }
+
         public object Get(Type type)
         {
             return gameObject.GetComponent(type);
@@ -38,7 +40,9 @@ namespace Ash.Core
 
         public void Destroy()
         {
-            GameObject.Destroy(gameObject);
+            IsDestroyed = true;
+            if (Application.isPlaying)
+                GameObject.Destroy(gameObject);
         }
 
         public T Add<T>() where T : Component

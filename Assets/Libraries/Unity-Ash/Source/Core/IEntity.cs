@@ -9,6 +9,7 @@ namespace Ash.Core
     public interface IEntity
     {
         bool Has(Type type);
+        bool IsDestroyed { get; }
         object Get(Type type);
         T Add<T>() where T : Component;
         void Remove(Component component);

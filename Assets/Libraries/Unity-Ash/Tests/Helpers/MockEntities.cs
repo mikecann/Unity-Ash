@@ -27,6 +27,8 @@ namespace Ash.Core
             return _components.Any(c => type.IsAssignableFrom(c.GetType()));
         }
 
+        public bool IsDestroyed { get; private set; }
+
         public object Get(Type type)
         {
             if (!Has(type))
