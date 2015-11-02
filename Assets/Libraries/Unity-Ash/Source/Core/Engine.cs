@@ -99,8 +99,14 @@ namespace Ash.Core
 
         public void Update(float delta)
         {
+            foreach (var family in _families)
+                family.Value.BeforeUpdate();
+
             foreach (var prioritizedSystem in _systems)
                 prioritizedSystem.System.Update(delta);
+
+            foreach (var family in _families)
+                family.Value.AfterUpdate();
         }
 
         public static IEngine Current { get; set; }

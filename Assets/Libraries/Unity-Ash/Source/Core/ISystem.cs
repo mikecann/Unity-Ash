@@ -8,8 +8,8 @@ namespace Ash.Core
 {
     public interface ISystem
     {
-        void AddedToEngine(Engine engine);
-        void RemovedFromEngine(Engine engine);
+        void AddedToEngine(IEngine engine);
+        void RemovedFromEngine(IEngine engine);
         void Update(float delta);
     }
 }

@@ -8,15 +8,15 @@ namespace Ash.Helpers
 {
     public class NodelessSystem : ISystem
     {
-        protected Action<Engine> _addedToEngineCallback;
+        protected Action<IEngine> _addedToEngineCallback;
 
-        public virtual void AddedToEngine(Engine engine)
+        public virtual void AddedToEngine(IEngine engine)
         {
             if (_addedToEngineCallback != null)
                 _addedToEngineCallback(engine);
         }
 
-        public virtual void RemovedFromEngine(Engine engine)
+        public virtual void RemovedFromEngine(IEngine engine)
         {
         }
 
@@ -33,7 +33,7 @@ namespace Ash.Helpers
 
         private INodeList<Node<T1>> _nodes;
 
-        override public void AddedToEngine(Engine engine)
+        override public void AddedToEngine(IEngine engine)
         {
             _nodes = engine.GetNodes<Node<T1>>();
             _nodes.NodeAddedEvent.AddListener(OnNodeAdded);
@@ -53,7 +53,7 @@ namespace Ash.Helpers
                 _nodeAddedCallback(node.Component1);
         }
 
-        override public void RemovedFromEngine(Engine engine)
+        override public void RemovedFromEngine(IEngine engine)
         {
             _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
             _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
@@ -76,7 +76,7 @@ namespace Ash.Helpers
 
         private INodeList<Node<T1, T2>> _nodes;
  
-        override public void AddedToEngine(Engine engine)
+        override public void AddedToEngine(IEngine engine)
         {
             _nodes = engine.GetNodes<Node<T1, T2>>();
             base.AddedToEngine(engine);
@@ -94,7 +94,7 @@ namespace Ash.Helpers
                 _nodeAddedCallback(node.Component1, node.Component2);
         }
 
-        override public void RemovedFromEngine(Engine engine)
+        override public void RemovedFromEngine(IEngine engine)
         {
             _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
             _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
@@ -117,7 +117,7 @@ namespace Ash.Helpers
 
         private INodeList<Node<T1, T2, T3>> _nodes;
 
-        override public void AddedToEngine(Engine engine)
+        override public void AddedToEngine(IEngine engine)
         {
             _nodes = engine.GetNodes<Node<T1, T2, T3>>();
             base.AddedToEngine(engine);
@@ -135,7 +135,7 @@ namespace Ash.Helpers
                 _nodeAddedCallback(node.Component1, node.Component2, node.Component3);
         }
 
-        override public void RemovedFromEngine(Engine engine)
+        override public void RemovedFromEngine(IEngine engine)
         {
             _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
             _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
@@ -158,7 +158,7 @@ namespace Ash.Helpers
 
         private INodeList<Node<T1, T2, T3, T4>> _nodes;
 
-        override public void AddedToEngine(Engine engine)
+        override public void AddedToEngine(IEngine engine)
         {
             _nodes = engine.GetNodes<Node<T1, T2, T3, T4>>();
             base.AddedToEngine(engine);
@@ -176,7 +176,7 @@ namespace Ash.Helpers
                 _nodeAddedCallback(node.Component1, node.Component2, node.Component3, node.Component4);
         }
 
-        override public void RemovedFromEngine(Engine engine)
+        override public void RemovedFromEngine(IEngine engine)
         {
         }
 
@@ -197,7 +197,7 @@ namespace Ash.Helpers
 
         private INodeList<Node<T1, T2, T3, T4, T5>> _nodes;
 
-        override public void AddedToEngine(Engine engine)
+        override public void AddedToEngine(IEngine engine)
         {
             _nodes = engine.GetNodes<Node<T1, T2, T3, T4, T5>>();
             base.AddedToEngine(engine);
@@ -217,7 +217,7 @@ namespace Ash.Helpers
                     node.Component4, node.Component5);
         }
 
-        override public void RemovedFromEngine(Engine engine)
+        override public void RemovedFromEngine(IEngine engine)
         {
             _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
             _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
@@ -241,7 +241,7 @@ namespace Ash.Helpers
 
         private INodeList<Node<T1, T2, T3, T4, T5, T6>> _nodes;
 
-        override public void AddedToEngine(Engine engine)
+        override public void AddedToEngine(IEngine engine)
         {
             _nodes = engine.GetNodes<Node<T1, T2, T3, T4, T5, T6>>();
             base.AddedToEngine(engine);
@@ -261,7 +261,7 @@ namespace Ash.Helpers
                     node.Component4, node.Component5, node.Component6);
         }
 
-        override public void RemovedFromEngine(Engine engine)
+        override public void RemovedFromEngine(IEngine engine)
         {
             _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
             _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);

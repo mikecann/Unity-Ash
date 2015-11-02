@@ -12,6 +12,7 @@ namespace Ash.Core
         void AddSystem(ISystem system, int priority);
         void RemoveSystem(ISystem system);
         INodeList<T> GetNodes<T>();
+        void ReleaseNodes<T>(INodeList<T> nodes);
         void Update(float delta);
     }
 }

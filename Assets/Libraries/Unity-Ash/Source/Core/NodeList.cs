@@ -9,25 +9,72 @@ namespace Ash.Core
 {
     public class NodeList<T> : INodeList<T>
     {
+        enum PendingChange
+        {
+            Add,
+            Remove
+        }
+
+        public bool IsLocked { get; private set; }
+
         private HashSet<T> _nodes;
+        private List<KeyValuePair<T, PendingChange>> _pending;
 
         public NodeList()
         {
             _nodes = new HashSet<T>();
             NodeAddedEvent = new NodeAdded<T>();
             NodeRemovedEvent = new NodeRemoved<T>();
+            _pending = new List<KeyValuePair<T, PendingChange>>();
         }
 
-        internal void Add(T node)
+        public void Add(T node)
         {
-            NodeAddedEvent.Invoke(node);
-            _nodes.Add(node);
+            if (IsLocked)
+            {
+                _pending.Add(new KeyValuePair<T, PendingChange>(node, PendingChange.Add));
+            }
+            else
+            {
+                NodeAddedEvent.Invoke(node);
+                _nodes.Add(node);
+            }
         }
 
-        internal void Remove(T node)
+        public void Remove(T node)
         {
-            NodeRemovedEvent.Invoke(node);
-            _nodes.Remove(node);
+            if (IsLocked)
+            {
+                _pending.Add(new KeyValuePair<T, PendingChange>(node, PendingChange.Remove));
+            }
+            else
+            {
+                NodeRemovedEvent.Invoke(node);
+                _nodes.Remove(node);
+            }
+        }
+
+        public void Lock()
+        {
+            IsLocked = true;
+        }
+
+        public void Unlock()
+        {
+            IsLocked = false;
+            ApplyPending();
+            _pending.Clear();
+        }
+
+        private void ApplyPending()
+        {
+            foreach (var pair in _pending)
+            {
+                if (pair.Value == PendingChange.Add)
+                    Add(pair.Key);
+                else
+                    Remove(pair.Key);
+            }
         }
 
         public IEnumerator<T> GetEnumerator()

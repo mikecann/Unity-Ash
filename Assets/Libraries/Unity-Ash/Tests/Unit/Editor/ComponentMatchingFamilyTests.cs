@@ -243,16 +243,23 @@ namespace Ash.Core
             Assert.AreEqual(family.Nodes.ToList()[0].Component1, entityA.Components[0]);
         }
 
-        //[Test]
-        //public void NodeContainingPropertiesIsStillValid()
-        //{
-        //    var family = new ComponentMatchingFamily<MockNodeWithProperties<MockComponentA>>();
+        [Test]
+        public void BeforeUpdating_NodesLocked()
+        {
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
+            var nodes = (NodeList<Node<MockComponentA>>)family.Nodes;
+            family.BeforeUpdate();
+            Assert.IsTrue(nodes.IsLocked);
+        }
 
-        //    var entityA = new MockEntity<MockComponentA>();
-        //    family.EntityAdded(entityA);
-
-        //    Assert.AreEqual(family.Nodes.Count(), 1);
-        //    Assert.AreEqual(family.Nodes.First().Component1, entityA.Components[0]);
-        //}
+        [Test]
+        public void BeforeUpdating_NodesUnLocked()
+        {
+            var family = new ComponentMatchingFamily<Node<MockComponentA>>();
+            var nodes = (NodeList<Node<MockComponentA>>)family.Nodes;
+            family.BeforeUpdate();
+            family.AfterUpdate();
+            Assert.IsFalse(nodes.IsLocked);
+        }
     }
 }

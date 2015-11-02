@@ -235,10 +235,10 @@ namespace Ash.Core
             engine.GetNodes<Node<MockComponentB>>();
             engine.AddEntity(entity);
 
-            entity.ComponentAdded.Invoke(entity, typeof(MockComponentC));
+            entity.ComponentAdded.Invoke(entity, typeof (MockComponentC));
 
             family1.Received().ComponentAdded(entity, typeof (MockComponentC));
-            family2.Received().ComponentAdded(entity, typeof(MockComponentC));
+            family2.Received().ComponentAdded(entity, typeof (MockComponentC));
         }
 
         [Test]
@@ -257,10 +257,10 @@ namespace Ash.Core
             engine.GetNodes<Node<MockComponentB>>();
             engine.AddEntity(entity);
 
-            entity.ComponentRemoved.Invoke(entity, typeof(MockComponentC));
+            entity.ComponentRemoved.Invoke(entity, typeof (MockComponentC));
 
-            family1.Received().ComponentRemoved(entity, typeof(MockComponentC));
-            family2.Received().ComponentRemoved(entity, typeof(MockComponentC));
+            family1.Received().ComponentRemoved(entity, typeof (MockComponentC));
+            family2.Received().ComponentRemoved(entity, typeof (MockComponentC));
         }
 
         [Test]
@@ -280,13 +280,40 @@ namespace Ash.Core
             engine.AddEntity(entity);
             engine.RemoveEntity(entity);
 
-            entity.ComponentAdded.Invoke(entity, typeof(MockComponentC));
-            entity.ComponentRemoved.Invoke(entity, typeof(MockComponentC));
+            entity.ComponentAdded.Invoke(entity, typeof (MockComponentC));
+            entity.ComponentRemoved.Invoke(entity, typeof (MockComponentC));
 
-            family1.DidNotReceive().ComponentAdded(entity, typeof(MockComponentC));
-            family2.DidNotReceive().ComponentAdded(entity, typeof(MockComponentC));
-            family1.DidNotReceive().ComponentRemoved(entity, typeof(MockComponentC));
-            family2.DidNotReceive().ComponentRemoved(entity, typeof(MockComponentC));
+            family1.DidNotReceive().ComponentAdded(entity, typeof (MockComponentC));
+            family2.DidNotReceive().ComponentAdded(entity, typeof (MockComponentC));
+            family1.DidNotReceive().ComponentRemoved(entity, typeof (MockComponentC));
+            family2.DidNotReceive().ComponentRemoved(entity, typeof (MockComponentC));
+        }
+
+        [Test]
+        public void WhenUpdating_FamiliesAreInformedBeforeAndAfter()
+        {
+            var factory = Substitute.For<IFamilyFactory>();
+            var engine = new Engine(factory);
+
+            var family1 = Substitute.For<IFamily<Node<MockComponentA>>>();
+            var family2 = Substitute.For<IFamily<Node<MockComponentB>>>();
+            factory.Produce<Node<MockComponentA>>().Returns(family1);
+            factory.Produce<Node<MockComponentB>>().Returns(family2);
+
+            engine.GetNodes<Node<MockComponentA>>();
+            engine.GetNodes<Node<MockComponentB>>();
+
+            engine.Update(20);
+
+            Received.InOrder(() => {
+                family1.BeforeUpdate();
+                family1.AfterUpdate();
+            });
+
+            Received.InOrder(() => {
+                family2.BeforeUpdate();
+                family2.AfterUpdate();
+            });
         }
     }
 }

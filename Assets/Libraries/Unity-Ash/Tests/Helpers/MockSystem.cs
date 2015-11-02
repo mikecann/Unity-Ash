@@ -4,23 +4,30 @@ using System.Linq;
 using System.Text;
 using Ash.Core;
 
-namespace Assets.Libraries.Unity_Ash.Tests.Helpers
+namespace Ash.Core
 {
     public class MockSystem<T> : ISystem
     {
-        public void AddedToEngine(Engine engine)
+        public Action<IEngine> AddedToEngineCallback { get; set; }
+        public Action<IEngine> RemovedFromEngineCallback { get; set; }
+        public Action<float> UpdateCallback { get; set; }
+
+        public void AddedToEngine(IEngine engine)
         {
-            throw new NotImplementedException();
+            if (AddedToEngineCallback != null)
+                AddedToEngineCallback(engine);
         }
 
-        public void RemovedFromEngine(Engine engine)
+        public void RemovedFromEngine(IEngine engine)
         {
-            throw new NotImplementedException();
+            if (RemovedFromEngineCallback != null)
+                RemovedFromEngineCallback(engine);
         }
 
         public void Update(float delta)
         {
-            throw new NotImplementedException();
+            if (UpdateCallback != null)
+                UpdateCallback(delta);
         }
     }
 }

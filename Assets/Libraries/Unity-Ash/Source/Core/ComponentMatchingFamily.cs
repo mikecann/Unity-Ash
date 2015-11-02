@@ -63,6 +63,16 @@ namespace Ash.Core
             RemoveEntity(entity);
         }
 
+        public void BeforeUpdate()
+        {
+            _nodes.Lock();
+        }
+
+        public void AfterUpdate()
+        {
+            _nodes.Unlock();
+        }
+
         private void RemoveEntity(IEntity entity)
         {
             var node = _entities[entity];

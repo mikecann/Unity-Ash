@@ -11,6 +11,8 @@ namespace Ash.Core
         void ComponentRemoved(IEntity entity, Type componentType);
         void EntityAdded(IEntity entity);
         void EntityRemoved(IEntity entity);
+        void BeforeUpdate();
+        void AfterUpdate();
     }
 
     public interface IFamily<T> : IFamily
