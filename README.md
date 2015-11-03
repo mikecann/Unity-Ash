@@ -12,6 +12,11 @@ Examples
 
 [Unity Ashteroids](https://github.com/mikecann/UnityAshteroids)
 
+Download
+----
+
+Download the latest version: https://github.com/mikecann/Unity-Ash/releases/latest
+
 Usage
 ----
 
