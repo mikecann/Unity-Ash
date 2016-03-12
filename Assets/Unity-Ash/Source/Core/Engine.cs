@@ -9,7 +9,7 @@ namespace Ash.Core
     public class Engine : IEngine
     {
         private List<SystemPriorityPair> _systems;
-        private Dictionary<Type, IFamily> _families;
+        private FamiliesContainer _families;
         private IFamilyFactory _familyFactory;
         private List<IEntity> _entities;
 
@@ -18,14 +18,14 @@ namespace Ash.Core
             Current = this;
             _familyFactory = familyFactory ?? new ComponentMatchingFamilyFactory();
             _systems = new List<SystemPriorityPair>();
-            _families = new Dictionary<Type, IFamily>();
+            _families = new FamiliesContainer();
             _entities = new List<IEntity>();
         }
 
         public void AddEntity(IEntity entity)
         {
             foreach (var pair in _families)
-                pair.Value.EntityAdded(entity);
+                pair.EntityAdded(entity);
 
             entity.ComponentAdded.AddListener(OnComponentAdded);
             entity.ComponentRemoved.AddListener(OnComponentRemoved);
@@ -35,20 +35,24 @@ namespace Ash.Core
 
         private void OnComponentRemoved(IEntity entity, Type component)
         {
+            _families.Lock();
             foreach (var pair in _families)
-                pair.Value.ComponentRemoved(entity, component);
+                pair.ComponentRemoved(entity, component);
+            _families.UnLock();
         }
 
         private void OnComponentAdded(IEntity entity, Type component)
         {
+            _families.Lock();
             foreach (var pair in _families)
-                pair.Value.ComponentAdded(entity, component);
+                pair.ComponentAdded(entity, component);
+            _families.UnLock();
         }
 
         public void RemoveEntity(IEntity entity)
         {
             foreach (var pair in _families)
-                pair.Value.EntityRemoved(entity);
+                pair.EntityRemoved(entity);
 
             entity.ComponentAdded.RemoveListener(OnComponentAdded);
             entity.ComponentRemoved.RemoveListener(OnComponentRemoved);
@@ -69,17 +73,17 @@ namespace Ash.Core
             system.RemovedFromEngine(this);
         }
 
-        public INodeList<T> GetNodes<T>()
+        public INodeList<T> GetNodes<T>() where T : Node
         {
             var type = typeof (T);
             IFamily<T> family;
 
-            if (_families.ContainsKey(type))
-                family = _families[type] as IFamily<T>;
+            if (_families.Contains(type))
+                family = _families.Get(type) as IFamily<T>;
             else
             {
                 family = _familyFactory.Produce<T>();
-                _families[type] = family;
+                _families.Add(type, family);
 
                 foreach (var entity in _entities)
                     family.EntityAdded(entity);
@@ -91,7 +95,7 @@ namespace Ash.Core
         public void ReleaseNodes<T>(INodeList<T> nodes)
         {
             var type = typeof(T);
-            if (!_families.ContainsKey(type))
+            if (!_families.Contains(type))
                 return;
 
             _families.Remove(type);
@@ -100,13 +104,17 @@ namespace Ash.Core
         public void Update(float delta)
         {
             foreach (var family in _families)
-                family.Value.BeforeUpdate();
+                family.BeforeUpdate();
 
             foreach (var prioritizedSystem in _systems)
                 prioritizedSystem.System.Update(delta);
 
+            _families.Lock();
+
             foreach (var family in _families)
-                family.Value.AfterUpdate();
+                family.AfterUpdate();
+
+            _families.UnLock();
         }
 
         public static IEngine Current { get; set; }
