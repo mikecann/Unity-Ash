@@ -1,15 +1,19 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Ash.Core
 {
-    [IntegrationTest.DynamicTest("Main")]
-    public class TestAddedEntityRemoved : MonoBehaviour
+    
+    public class TestAddedEntityRemoved
     {
-        void Start()
+        [Test]
+        public void Test()
         {
             var engine = new Engine();
 
@@ -19,12 +23,9 @@ namespace Ash.Core
 
             var nodes = engine.GetNodes<Node<SpriteRenderer>>();
 
-            DestroyImmediate(obj);
-            
-            if (nodes.Count() == 0)
-                IntegrationTest.Pass();
-            else
-                IntegrationTest.Fail();
+            GameObject.DestroyImmediate(obj);
+
+            Assert.AreEqual(0, nodes.Count());
         }
     }
 }

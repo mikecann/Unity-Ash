@@ -80,7 +80,6 @@ namespace Ash.Core
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
         public void AfterRemoving_RetrievalThrowsError()
         {
             var type = typeof (Node<SpriteRenderer>);
@@ -89,7 +88,7 @@ namespace Ash.Core
             _container.Add(type, family);
             _container.Remove(type);
 
-            _container.Get(type);
+            Assert.Throws<Exception>(() => _container.Get(type));
         }
 
         [Test]
@@ -162,7 +161,6 @@ namespace Ash.Core
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
         public void PendingAreCleared()
         {
             _container.Lock();
@@ -174,7 +172,7 @@ namespace Ash.Core
             _container.Lock();
             _container.UnLock();
 
-            _container.Get(typeof(Node<SpriteRenderer>));
+            Assert.Throws<Exception>(() => _container.Get(typeof(Node<SpriteRenderer>)));
         }
     }
 }

@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace Ash.Core
 {
-    [IntegrationTest.DynamicTest("Main")]
-    public class TestNonMatchingEntityNotAdded : MonoBehaviour
+    public class TestNonMatchingEntityNotAdded
     {
-        void Start()
+        [Test]
+        public void Test()
         {
             var engine = new Engine();
 
@@ -18,11 +19,8 @@ namespace Ash.Core
             entity.Add<SpriteRenderer>();
 
             var nodes = engine.GetNodes<Node<Rigidbody>>();
-            
-            if (nodes.Count() == 0)
-                IntegrationTest.Pass();
-            else
-                IntegrationTest.Fail();
+
+            Assert.AreEqual(0, nodes.Count());
         }
     }
 }

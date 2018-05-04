@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ash.Core;
+﻿using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -85,15 +81,17 @@ namespace Ash.Core
         }
 
         [Test]
-        [ExpectedException(typeof(ComponentMatchingFamilyException))]
         public void IfAnEntityIsAddedTwice_ExceptionThrown()
         {
             var family = new ComponentMatchingFamily<Node<MockComponentA>>();
 
             var entityA = new MockEntity<MockComponentA>();
 
-            family.EntityAdded(entityA);
-            family.EntityAdded(entityA);
+            Assert.Throws<ComponentMatchingFamilyException>(() =>
+            {
+                family.EntityAdded(entityA);
+                family.EntityAdded(entityA);
+            });
         }
 
         [Test]

@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace Ash.Core
 {
-    [IntegrationTest.DynamicTest("Main")]
-    public class TestDestroyingAnEntityMidUpdateUpdatesOthers : MonoBehaviour
+    public class TestDestroyingAnEntityMidUpdateUpdatesOthers
     {
-        void Start()
+        [Test]
+        public void Test()
         {
             //var engine = new Engine();
 
@@ -37,7 +38,7 @@ namespace Ash.Core
             //    secondPass[node.component1] = true;
             //}
 
-            IntegrationTest.Pass();
+            //IntegrationTest.Pass();
         }
 
         //private Entity AddEntity()
