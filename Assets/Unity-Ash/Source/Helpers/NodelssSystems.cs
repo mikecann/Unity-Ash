@@ -57,7 +57,6 @@ namespace Ash.Helpers
         {
             _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
             _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
-            engine.ReleaseNodes(_nodes);
         }
 
         override public void Update(float delta)
@@ -100,7 +99,6 @@ namespace Ash.Helpers
         {
             _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
             _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
-            engine.ReleaseNodes(_nodes);
         }
 
         override public void Update(float delta)
@@ -143,7 +141,6 @@ namespace Ash.Helpers
         {
             _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
             _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
-            engine.ReleaseNodes(_nodes);
         }
 
         override public void Update(float delta)
@@ -229,7 +226,6 @@ namespace Ash.Helpers
         {
             _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
             _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
-            engine.ReleaseNodes(_nodes);
         }
 
         override public void Update(float delta)
@@ -275,7 +271,6 @@ namespace Ash.Helpers
         {
             _nodes.NodeAddedEvent.RemoveListener(OnNodeAdded);
             _nodes.NodeRemovedEvent.RemoveListener(OnNodeRemoved);
-            engine.ReleaseNodes(_nodes);
         }
 
         override public void Update(float delta)
