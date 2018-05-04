@@ -8,7 +8,7 @@ namespace Ash.Core
 {
     public class FakeEntity : Entity
     {
-        public IEngine engine;
+        public static IEngine engine;
 
         override protected IEngine FindEngine()
         {
@@ -18,12 +18,6 @@ namespace Ash.Core
         override protected void DestroyComponent(Component component)
         {
             DestroyImmediate(component);
-        }
-
-        public void Awaken(IEngine engine)
-        {
-            this.engine = engine;
-            Awake();
         }
     }
 }

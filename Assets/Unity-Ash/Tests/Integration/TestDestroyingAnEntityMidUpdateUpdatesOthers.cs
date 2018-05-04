@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -9,44 +10,104 @@ namespace Ash.Core
 {
     public class TestDestroyingAnEntityMidUpdateUpdatesOthers
     {
-        [Test]
-        public void Test()
+        private Engine _engine;
+        private Entity _entity1;
+        private Entity _entity2;
+        private Entity _entity3;
+        private ISystem _system;
+        private INodeList<Node<Transform>> _nodes;
+        private int _calls;
+
+        [SetUp]
+        public void Setup()
         {
-            //var engine = new Engine();
+            _engine = new Engine();
 
-            //var firstPass = new Dictionary<Entity, bool>();
+            _entity1 = new GameObject().AddComponent<Entity>();
+            _entity2 = new GameObject().AddComponent<Entity>();
+            _entity3 = new GameObject().AddComponent<Entity>();
 
-            //firstPass[AddEntity()] = false;
-            //firstPass[AddEntity()] = false;
-            //firstPass[AddEntity()] = false;
-            //firstPass[AddEntity()] = false;
+            _system = Substitute.For<ISystem>();
+            _nodes = _engine.GetNodes<Node<Transform>>();
 
-            //var secondPass = new Dictionary<Entity, bool>(firstPass);
+            _engine.AddSystem(_system, 0);
 
-            //var nodes = engine.GetNodes<Node<Entity, SpriteRenderer>>();
-
-            //var i = 0;
-            //foreach (var node in nodes)
-            //{
-            //    firstPass[node.component1] = true;
-            //    if (i++ == 2)
-            //        node.component1.Destroy();
-            //}
-
-            //foreach (var node in nodes)
-            //{
-            //    secondPass[node.component1] = true;
-            //}
-
-            //IntegrationTest.Pass();
+            _calls = 0;
         }
 
-        //private Entity AddEntity()
-        //{
-        //    var obj = new GameObject();
-        //    var entity = obj.AddComponent<Entity>();
-        //    var renderer = entity.Add<SpriteRenderer>();
-        //    return entity;
-        //}
+        [Test]
+        public void TestAssumption()
+        {
+            _system.When(s => s.Update(0)).Do(c =>
+            {
+                foreach (var node in _nodes)
+                    _calls++;
+            });
+
+            _engine.Update(0);
+
+            Assert.AreEqual(3, _calls);
+        }
+
+        [Test]
+        public void TestDestroyingThisOne()
+        {
+            _system.When(s => s.Update(0)).Do(c =>
+            {
+                foreach (var node in _nodes)
+                {
+                    _calls++;
+
+                    if (_calls==2)
+                        GameObject.DestroyImmediate(_entity2.gameObject);
+                }
+            });
+
+            _engine.Update(0);
+
+            Assert.AreEqual(3, _calls);
+        }
+
+        [Test]
+        public void TestDestroyingNextOne()
+        {
+            _system.When(s => s.Update(0)).Do(c =>
+            {
+                foreach (var node in _nodes)
+                {
+                    _calls++;
+
+                    if (_calls == 1)
+                        GameObject.DestroyImmediate(_entity2.gameObject);
+
+                    if (_calls == 2)
+                        Assert.IsTrue(node.Component1==null);
+                }
+            });
+
+            _engine.Update(0);
+
+            Assert.AreEqual(3, _calls);
+        }
+
+        [Test]
+        public void TestRemovingNextOne()
+        {
+            _system.When(s => s.Update(0)).Do(c =>
+            {
+                foreach (var node in _nodes)
+                {
+                    _calls++;
+
+                    if (_calls == 1)
+                        _engine.RemoveEntity(_entity2);
+                }
+            });
+
+            _engine.Update(0);
+
+            Assert.AreEqual(3, _calls);
+        }
+
     }
 }

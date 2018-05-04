@@ -36,8 +36,8 @@ namespace Ash.Core
             }
             else
             {
-                NodeAddedEvent.Invoke(node);
                 _nodes.Add(node);
+                NodeAddedEvent.Invoke(node);
             }
         }
 
@@ -49,8 +49,8 @@ namespace Ash.Core
             }
             else
             {
-                NodeRemovedEvent.Invoke(node);
                 _nodes.Remove(node);
+                NodeRemovedEvent.Invoke(node);
             }
         }
 

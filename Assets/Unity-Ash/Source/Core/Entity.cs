@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace Ash.Core
 {
     public class Entity : MonoBehaviour, IEntity
     {
-        private ComponentAdded _componentAdded = new ComponentAdded();
-        private ComponentRemoved _componentRemoved = new ComponentRemoved();
+        private readonly ComponentAdded _componentAdded = new ComponentAdded();
+        private readonly ComponentRemoved _componentRemoved = new ComponentRemoved();
         private IEngine _engine;
 
         protected void Awake()
@@ -28,10 +27,8 @@ namespace Ash.Core
 
         public bool Has(Type type)
         {
-            return gameObject.GetComponent(type) != null;
-        }
-
-        public bool IsDestroyed { get; private set; }
+            return GetComponent(type) != null;
+        } 
 
         public object Get(Type type)
         {
@@ -40,15 +37,14 @@ namespace Ash.Core
 
         public void Destroy()
         {
-            IsDestroyed = true;
             if (Application.isPlaying)
-                GameObject.Destroy(gameObject);
+                Destroy(gameObject);
         }
 
         public T Add<T>() where T : Component
         {
             var component = gameObject.AddComponent<T>();
-            ComponentAdded.Invoke(this, typeof (T));
+            ComponentAdded.Invoke(this, typeof(T));
             return component;
         }
 
@@ -60,12 +56,12 @@ namespace Ash.Core
 
         protected virtual void DestroyComponent(Component component)
         {
-            Destroy(component);
+            DestroyImmediate(component);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
-            if (_engine!=null)
+            if (_engine != null)
                 _engine.RemoveEntity(this);
         }
 

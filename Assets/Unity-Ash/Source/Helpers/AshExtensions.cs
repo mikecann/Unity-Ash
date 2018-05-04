@@ -95,4 +95,14 @@ public static class AshEngineExtensions
 
         entity.Remove(component);
     }
+
+    public static bool Has<T>(this IEntity entity)
+    {
+        return entity.Has(typeof(T));
+    }
+
+    public static T Get<T>(this IEntity entity) where T : Component
+    {
+        return (T)entity.Get(typeof(T));
+    }
 }
